@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -12,15 +13,16 @@ class OrderController extends Controller
         // Ambil data asli dari database, urutin dari yang terbaru
         $orders = Order::orderBy('created_at', 'desc')->get();
 
-        // Data produk untuk dropdown (bisa diganti ambil dari DB Product nanti)
-        $availableProducts = [
-            'Kue Ulang Tahun Coklat - Rp 250.000',
-            'Black Forest - Rp 280.000',
-            'Nastar - Rp 75.000',
-            'Tiramisu Cup - Rp 35.000',
-            'Klapertart - Rp 150.000',
-            'Putri Salju - Rp 70.000'
-        ];
+        $availableProducts = Product::orderBy('name')
+            ->get()
+            ->map(function (Product $product) {
+                return [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'price' => (float) $product->price,
+                ];
+            })
+            ->values();
 
         return view('orders.index', compact('orders', 'availableProducts'));
     }

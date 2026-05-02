@@ -83,8 +83,9 @@ class RecipeController extends Controller
     public function destroy($id)
     {
         $recipe = Recipe::findOrFail($id);
-        $recipe->delete(); // Karena pakai onDelete('cascade') di migration, bahan-bahannya otomatis ikut kehapus!
+        $recipe->ingredients()->delete();
+        $recipe->delete();
 
-        return redirect()->back()->with('success', 'Resep berhasil dihapus!');
+        return redirect()->back()->with('success', 'Resep berhasil dihapus dari Database!');
     }
 }
