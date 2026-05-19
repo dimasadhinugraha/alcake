@@ -34,24 +34,28 @@ class OrderController extends Controller
             'customer' => 'required|string|max:255',
             'status' => 'required|string',
             'order_date' => 'required|date',
+            'finish_date' => 'required|date',
             'products' => 'required|array|min:1', // Keranjang ga boleh kosong
         ]);
 
-        // 2. Hitung Total Harga dari keranjang
+        // 2. Validasi ketentuan tanggal selesai (minimal +2 hari)
+        $minFinishDate = date('Y-m-d', strtotime($request->order_date . ' + 2 days'));
+        if ($request->finish_date < $minFinishDate) {
+            return redirect()->back()->withErrors(['finish_date' => 'Tanggal selesai minimal +2 hari dari tanggal pemesanan!'])->withInput();
+        }
+
+        // 3. Hitung Total Harga dari keranjang
         $total = 0;
         foreach ($request->products as $item) {
             $total += $item['subtotal'];
         }
-
-        // 3. Kalkulasi Estimasi Selesai (+2 Hari)
-        $finish_date = date('Y-m-d', strtotime($request->order_date. ' + 2 days'));
 
         // 4. Simpan ke Database
         Order::create([
             'customer' => $request->customer,
             'status' => $request->status,
             'order_date' => $request->order_date,
-            'finish_date' => $finish_date,
+            'finish_date' => $request->finish_date,
             'notes' => $request->notes,
             'total' => $total,
             'products' => $request->products,
@@ -59,5 +63,41 @@ class OrderController extends Controller
 
         // 5. Lempar balik dengan pesan sukses
         return redirect()->back()->with('success', 'Pesanan baru berhasil dibuat dan disimpan!');
+    }
+
+    public function update(Request $request, $id)
+    {
+        // 1. Validasi inputan
+        $request->validate([
+            'customer' => 'required|string|max:255',
+            'status' => 'required|string',
+            'order_date' => 'required|date',
+            'finish_date' => 'required|date',
+            'products' => 'required|array|min:1',
+        ]);
+
+        // 2. Validasi ketentuan tanggal selesai (minimal +2 hari)
+        $minFinishDate = date('Y-m-d', strtotime($request->order_date . ' + 2 days'));
+        if ($request->finish_date < $minFinishDate) {
+            return redirect()->back()->withErrors(['finish_date' => 'Tanggal selesai minimal +2 hari dari tanggal pemesanan!'])->withInput();
+        }
+
+        $total = 0;
+        foreach ($request->products as $item) {
+            $total += $item['subtotal'];
+        }
+
+        $order = Order::findOrFail($id);
+        $order->update([
+            'customer' => $request->customer,
+            'status' => $request->status,
+            'order_date' => $request->order_date,
+            'finish_date' => $request->finish_date,
+            'notes' => $request->notes,
+            'total' => $total,
+            'products' => $request->products,
+        ]);
+
+        return redirect()->back()->with('success', 'Pesanan berhasil diperbarui!');
     }
 }

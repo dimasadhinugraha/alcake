@@ -66,6 +66,7 @@
                 <table class="w-full">
                     <thead class="bg-gradient-to-r from-pink-50 via-rose-50 to-pink-50">
                         <tr>
+                            <th class="px-8 py-5 text-left text-xs font-bold text-pink-900 uppercase tracking-wide">ID Bahan</th>
                             <th class="px-8 py-5 text-left text-xs font-bold text-pink-900 uppercase tracking-wide">Nama Bahan</th>
                             <th class="px-8 py-5 text-left text-xs font-bold text-pink-900 uppercase tracking-wide">Stok Saat Ini</th>
                             <th class="px-8 py-5 text-left text-xs font-bold text-pink-900 uppercase tracking-wide">Satuan</th>
@@ -79,6 +80,9 @@
                     <tbody class="divide-y divide-pink-100">
                         @forelse($materials ?? [] as $mat)
                             <tr class="hover:bg-gradient-to-r hover:from-pink-50/50 hover:to-transparent transition-all group">
+                                <td class="px-8 py-5 whitespace-nowrap">
+                                    <span class="text-sm font-mono font-bold text-pink-600 bg-pink-50 px-2.5 py-1 rounded-lg border border-pink-100">{{ $mat->formatted_id }}</span>
+                                </td>
                                 <td class="px-8 py-5 whitespace-nowrap">
                                     <div class="flex items-center gap-3">
                                         <div class="w-2 h-2 rounded-full bg-blue-500"></div>
@@ -98,7 +102,7 @@
                                 </td>
                                 <td class="px-8 py-5 whitespace-nowrap text-sm text-pink-600 font-medium">{{ optional($mat->updated_at)->translatedFormat('d M Y') }}</td>
                                 <td class="px-8 py-5 whitespace-nowrap">
-                                    <button data-slot="button" type="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-primary/90 px-4 py-2 has-[&gt;svg]:px-3 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-xl rounded-xl h-12 font-semibold text-base" onclick="openAddStockModal()">
+                                    <button data-slot="button" type="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-primary/90 px-4 py-2 has-[&gt;svg]:px-3 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-xl rounded-xl h-12 font-semibold text-base" onclick="openEditMaterialModal({{ $mat->id }}, '{{ addslashes($mat->name) }}', {{ $mat->stock }}, {{ $mat->min_stock }}, {{ $mat->max_stock ?? 'null' }}, '{{ $mat->unit }}')">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen w-5 h-5 mr-2"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path></svg>Edit
                                     </button>
                                 </td>
@@ -148,7 +152,7 @@
                                     <td class="px-8 py-5"><p class="text-sm text-gray-700 font-medium">{{ $in->notes }}</p></td>
                                 </tr>
                             @empty
-                                <tr><td colspan="5" class="py-6 text-gray-400">Belum ada riwayat masuk.</td></tr>
+                                <tr><td colspan="5" class="py-10 text-gray-400 text-center font-semibold">Belum ada riwayat masuk.</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -198,7 +202,7 @@
                                     </td>
                                 </tr>
                             @empty
-                                <tr><td colspan="5" class="py-6 text-gray-400">Belum ada riwayat penggunaan.</td></tr>
+                                <tr><td colspan="5" class="py-10 text-gray-400 text-center font-semibold">Belum ada riwayat penggunaan.</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -216,8 +220,9 @@
     </div>
 </div>
 
-<div id="addStockModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gray-900/40 backdrop-blur-sm py-10 transition-opacity">
-    <div class="bg-white rounded-3xl w-full max-w-md mx-4 shadow-2xl flex flex-col relative overflow-hidden">
+<div id="addStockModal" class="fixed inset-0 z-50 hidden flex items-center justify-center py-10">
+    <div onclick="closeAddStockModal()" data-state="open" data-slot="dialog-overlay" class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50" style="pointer-events: auto;" data-aria-hidden="true" aria-hidden="true"></div>
+    <div class="bg-white rounded-3xl w-full max-w-md mx-4 shadow-2xl flex flex-col relative overflow-hidden z-50">
         <div class="px-7 pt-7 pb-4 flex justify-between items-center border-b border-gray-100">
             <div class="flex items-center gap-3">
                 <div class="bg-[#10B981] w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xl leading-none">+</div>
@@ -257,8 +262,9 @@
     </div>
 </div>
 
-<div id="newMaterialModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gray-900/40 backdrop-blur-sm py-10 transition-opacity">
-    <div class="bg-white rounded-3xl w-full max-w-md mx-4 shadow-2xl flex flex-col relative max-h-[95vh] overflow-hidden">
+<div id="newMaterialModal" class="fixed inset-0 z-50 hidden flex items-center justify-center py-10">
+    <div onclick="closeNewMaterialModal()" data-state="open" data-slot="dialog-overlay" class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50" style="pointer-events: auto;" data-aria-hidden="true" aria-hidden="true"></div>
+    <div class="bg-white rounded-3xl w-full max-w-md mx-4 shadow-2xl flex flex-col relative max-h-[95vh] overflow-hidden z-50">
         <div class="px-7 pt-7 pb-4 flex justify-between items-center border-b border-gray-100">
             <div class="flex items-center gap-3">
                 <div class="bg-[#FF4B8B] w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xl leading-none">+</div>
@@ -277,7 +283,15 @@
 
                 <div class="bg-[#FFF0F6] border border-pink-100 rounded-2xl p-4">
                     <label class="block text-xs font-bold text-[#D82A97] mb-1.5">Satuan</label>
-                    <input type="text" name="unit" required placeholder="Satuan (misal: kg, pcs, liter)..." class="w-full bg-white border border-pink-50 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-pink-300 outline-none text-gray-800 font-medium shadow-sm">
+                    <select name="unit" required class="w-full bg-white border border-pink-50 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-pink-300 outline-none text-gray-800 font-medium shadow-sm">
+                        <option value="kg">⚖️ kg (Kilogram)</option>
+                        <option value="gr">⚖️ gr (Gram)</option>
+                        <option value="pcs">📦 pcs (Butir / Biji)</option>
+                        <option value="liter">🥛 liter (Liter)</option>
+                        <option value="ml">🥛 ml (Mililiter)</option>
+                        <option value="pack">🛍️ pack (Pak)</option>
+                        <option value="bungkus">🛍️ bungkus (Bungkus)</option>
+                    </select>
                 </div>
 
                 <div class="bg-[#FFF0F6] border border-pink-100 rounded-2xl p-4">
@@ -299,9 +313,87 @@
     </div>
 </div>
 
+<!-- Modal Edit Stok Bahan Baku -->
+<div id="editMaterialModal" class="fixed inset-0 z-50 hidden flex items-center justify-center py-10">
+    <div onclick="closeEditMaterialModal()" data-state="open" data-slot="dialog-overlay" class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50" style="pointer-events: auto;" data-aria-hidden="true" aria-hidden="true"></div>
+    
+    <div role="dialog" id="radix-:rv:" aria-describedby="radix-:r11:" aria-labelledby="radix-:r10:" data-state="open" data-slot="dialog-content" class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative w-full max-w-[calc(100%-2rem)] z-50 grid gap-4 p-6 duration-200 sm:max-w-[600px] bg-white rounded-3xl border-2 border-pink-200/50 shadow-2xl mx-auto" style="pointer-events: auto;">
+        
+        <div data-slot="dialog-header" class="flex flex-col gap-2 text-center sm:text-left">
+            <div class="flex items-center gap-3 pb-2">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-xl flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen w-6 h-6 text-white"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path></svg>
+                </div>
+                <div>
+                    <h2 id="radix-:r10:" data-slot="dialog-title" class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Edit Stok Bahan Baku</h2>
+                    <p id="edit-material-name" class="text-sm text-gray-600 mt-1">Nama Bahan</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 bg-yellow-50 border-2 border-yellow-200 rounded-2xl">
+            <div class="flex items-start gap-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert w-5 h-5 text-yellow-700 flex-shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+                <div>
+                    <p class="text-sm font-bold text-yellow-900">Perhatian: Field Wajib Diisi</p>
+                    <p class="text-xs text-yellow-700 mt-1">Semua field bertanda <span class="text-red-600 font-bold">*</span> wajib diisi dengan angka yang valid</p>
+                </div>
+            </div>
+        </div>
+
+        <form id="editMaterialForm" action="" method="POST" class="space-y-5 pt-2">
+            @csrf
+            @method('PUT')
+            
+            <div class="space-y-3 p-5 bg-white rounded-2xl border border-blue-100">
+                <label data-slot="label" class="select-none text-sm font-semibold text-blue-900 flex items-center gap-1" for="edit-stock">Stok Saat Ini <span class="text-red-600">*</span></label>
+                <div class="flex gap-3">
+                    <input type="number" name="stock" data-slot="input" class="flex-1 bg-white rounded-xl h-12 px-3 text-lg font-semibold border-2 border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-300" id="edit-stock" placeholder="0" min="0.01" step="0.01" required>
+                    <div class="w-28 flex items-center justify-center bg-white border-2 border-blue-200 rounded-xl px-4 font-bold text-blue-700 edit-unit-display">kg</div>
+                </div>
+            </div>
+
+            <div class="space-y-3 p-5 bg-white rounded-2xl border border-orange-100">
+                <label data-slot="label" class="select-none text-sm font-semibold text-orange-900 flex items-center gap-1" for="edit-minStock">Stok Minimal <span class="text-red-600">*</span></label>
+                <div class="flex gap-3">
+                    <input type="number" name="min_stock" data-slot="input" class="flex-1 bg-white rounded-xl h-12 px-3 text-lg font-semibold border-2 border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-300" id="edit-minStock" placeholder="0" min="0.01" step="0.01" required>
+                    <div class="w-28 flex items-center justify-center bg-white border-2 border-orange-200 rounded-xl px-4 font-bold text-orange-700 edit-unit-display">kg</div>
+                </div>
+            </div>
+
+            <div class="space-y-3 p-5 bg-white rounded-2xl border border-green-100">
+                <label data-slot="label" class="select-none text-sm font-semibold text-green-900 flex items-center gap-1" for="edit-maxStock">Stok Maksimal <span class="text-red-600">*</span></label>
+                <div class="flex gap-3">
+                    <input type="number" name="max_stock" data-slot="input" class="flex-1 bg-white rounded-xl h-12 px-3 text-lg font-semibold border-2 border-green-200 focus:outline-none focus:ring-2 focus:ring-green-300" id="edit-maxStock" placeholder="0" min="0.01" step="0.01" required>
+                    <div class="w-28 flex items-center justify-center bg-white border-2 border-green-200 rounded-xl px-4 font-bold text-green-700 edit-unit-display">kg</div>
+                </div>
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button data-slot="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap transition-all hover:bg-primary/90 px-4 py-2 flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white shadow-xl rounded-xl h-12 font-semibold text-base" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save w-5 h-5 mr-2"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"></path><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"></path><path d="M7 3v4a1 1 0 0 0 1 1h7"></path></svg>
+                    Simpan Perubahan
+                </button>
+                <button type="button" onclick="closeEditMaterialModal()" data-slot="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm transition-all px-4 py-2 flex-1 rounded-xl border-2 border-pink-200 hover:bg-pink-50 h-12 font-semibold text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x w-5 h-5 mr-2"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+                    Batal
+                </button>
+            </div>
+        </form>
+        
+        <button type="button" onclick="closeEditMaterialModal()" class="absolute top-6 right-6 opacity-70 transition-opacity hover:opacity-100 text-gray-400 hover:text-red-500 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x w-6 h-6"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+            <span class="sr-only">Close</span>
+        </button>
+    </div>
+</div>
+
 <script>
-    function openAddStockModal() {
+    function openAddStockModal(materialName = null) {
         document.getElementById('addStockModal').classList.remove('hidden');
+        if (materialName) {
+            document.getElementById('stock_material_select').value = materialName;
+        }
         updateStockUnit();
     }
 
@@ -327,6 +419,25 @@
 
     function closeNewMaterialModal() {
         document.getElementById('newMaterialModal').classList.add('hidden');
+    }
+
+    function openEditMaterialModal(id, name, stock, minStock, maxStock, unit) {
+        document.getElementById('editMaterialModal').classList.remove('hidden');
+        document.getElementById('edit-material-name').innerText = name;
+        document.getElementById('edit-stock').value = stock;
+        document.getElementById('edit-minStock').value = minStock;
+        document.getElementById('edit-maxStock').value = maxStock !== null ? maxStock : '';
+        
+        // Update unit displays
+        const unitDisplays = document.querySelectorAll('.edit-unit-display');
+        unitDisplays.forEach(el => el.innerText = unit);
+        
+        // Dynamic action URL for form
+        document.getElementById('editMaterialForm').action = `/materials/${id}`;
+    }
+
+    function closeEditMaterialModal() {
+        document.getElementById('editMaterialModal').classList.add('hidden');
     }
 </script>
 @endsection

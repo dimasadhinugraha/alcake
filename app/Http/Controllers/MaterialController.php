@@ -109,4 +109,38 @@ class MaterialController extends Controller
         return redirect()->back()->with('success', 'Stok berhasil ditambah!');
     }
 
+    // Fungsi: Modal Edit Stok Bahan Baku (Warna Biru)
+    public function update(Request $request, $id)
+    {
+        $material = Material::findOrFail($id);
+
+        $request->validate([
+            'stock' => 'required|numeric|min:0',
+            'min_stock' => 'required|numeric|min:0',
+            'max_stock' => 'required|numeric|min:0',
+        ]);
+
+        $oldStock = $material->stock;
+        $newStock = $request->stock;
+
+        $material->update([
+            'stock' => $newStock,
+            'min_stock' => $request->min_stock,
+            'max_stock' => $request->max_stock,
+        ]);
+
+        // Catat ke riwayat jika stok berubah
+        if ($newStock != $oldStock) {
+            $diff = $newStock - $oldStock;
+            MaterialHistory::create([
+                'material_id' => $material->id,
+                'material_name' => $material->name,
+                'type' => $diff > 0 ? 'inbound' : 'outbound',
+                'qty' => abs($diff),
+                'notes' => 'Penyesuaian stok (Edit)'
+            ]);
+        }
+
+        return redirect()->route('materials.index')->with('success', 'Data stok bahan baku berhasil diperbarui!');
+    }
 }

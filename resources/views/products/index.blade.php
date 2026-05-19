@@ -79,13 +79,13 @@
             <div class="flex flex-col md:flex-row gap-4">
                 <div class="flex-1 relative">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search absolute left-4 top-1/2 transform -translate-y-1/2 text-pink-400 w-5 h-5"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-                    <input type="text" class="flex w-full px-3 py-1 text-base outline-none pl-12 h-12 bg-white border-2 border-pink-200 rounded-xl font-medium focus:border-pink-400" placeholder="Cari menu kue...">
+                    <input type="text" id="search_input" oninput="filterProducts()" class="flex w-full px-3 py-1 text-base outline-none pl-12 h-12 bg-white border-2 border-pink-200 rounded-xl font-medium focus:border-pink-400" placeholder="Cari menu kue...">
                 </div>
-                <div class="relative w-full md:w-[200px]">
-                    <select class="w-full h-12 bg-white border-2 border-pink-200 rounded-xl font-semibold px-4 appearance-none outline-none focus:border-pink-400 text-gray-700 cursor-pointer">
+                <div class="relative w-full md:w-[250px]">
+                    <select id="category_filter" onchange="filterProducts()" class="w-full h-12 bg-white border-2 border-pink-200 rounded-xl font-semibold px-4 appearance-none outline-none focus:border-pink-400 text-gray-700 cursor-pointer">
                         <option value="">Semua Kategori</option>
                         @foreach($categories as $cat)
-                            <option value="{{ $cat }}">{{ $cat }}</option>
+                            <option value="{{ $cat->name }}">{{ $cat->name }}</option>
                         @endforeach
                     </select>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"><path d="m6 9 6 6 6-6"></path></svg>
@@ -98,18 +98,19 @@
             @forelse($products as $product)
                 @php
                     $catColor = 'from-pink-400 to-rose-400'; 
-                    $cat = strtolower($product->category);
+                    $catName = $product->categoryRelation->name ?? $product->category;
+                    $cat = strtolower($catName);
                     if (str_contains($cat, 'black forest')) $catColor = 'from-gray-700 to-gray-900';
                     elseif (str_contains($cat, 'klapertart')) $catColor = 'from-orange-400 to-red-400';
                     elseif (str_contains($cat, 'lebaran') || str_contains($cat, 'nastar') || str_contains($cat, 'putri') || str_contains($cat, 'kastengel')) $catColor = 'from-yellow-400 to-amber-400';
                     elseif (str_contains($cat, 'jajanan') || str_contains($cat, 'bolu') || str_contains($cat, 'donat') || str_contains($cat, 'brownies') || str_contains($cat, 'lemper')) $catColor = 'from-green-400 to-emerald-400';
                     elseif (str_contains($cat, 'dessert') || str_contains($cat, 'tiramisu')) $catColor = 'from-purple-400 to-pink-400';
                 @endphp
-                <div class="group bg-white/95 backdrop-blur-sm rounded-2xl border-2 border-pink-100 hover:border-pink-300 shadow-lg hover:shadow-2xl transition-all overflow-hidden flex flex-col">
+                <div class="product-card group bg-white/95 backdrop-blur-sm rounded-2xl border-2 border-pink-100 hover:border-pink-300 shadow-lg hover:shadow-2xl transition-all overflow-hidden flex flex-col" data-name="{{ strtolower($product->name) }}" data-category="{{ $catName }}">
                     <div class="bg-gradient-to-r {{ $catColor }} p-4 text-white">
                         <div class="flex items-center justify-between">
                             <span class="inline-flex items-center justify-center rounded-md border px-2 py-0.5 text-xs w-fit whitespace-nowrap shrink-0 bg-white/20 text-white border-white/30 font-semibold backdrop-blur-sm">
-                                {{ $product->category }}
+                                {{ $product->formatted_id }} - {{ $catName }}
                             </span>
                             <span class="inline-flex items-center justify-center rounded-md border text-xs w-fit whitespace-nowrap shrink-0 bg-amber-400 text-amber-900 border-amber-500 font-bold px-3 py-1">
                                 Pre-Order
@@ -162,7 +163,7 @@
 </div>
 
 <!-- Modal Tambah -->
-<div id="addModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4 sm:p-0">
+<div id="addModal" onclick="if(event.target === this) closeAddModal()" class="fixed inset-0 z-50 hidden overflow-y-auto items-center justify-center bg-black/40 backdrop-blur-sm p-4 sm:p-0">
     <div class="relative w-full max-w-[600px] bg-white/95 backdrop-blur-xl rounded-3xl border-2 border-pink-200/50 shadow-2xl p-6 mx-auto sm:my-8">
         <div class="flex flex-col gap-2 text-center sm:text-left">
             <div class="flex items-center gap-3 pb-2">
@@ -182,10 +183,10 @@
                 <div class="space-y-3 p-5 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl border border-purple-100">
                     <label class="flex items-center gap-2 text-sm font-semibold text-purple-900" for="category">Kategori</label>
                     <div class="relative">
-                        <select id="category" name="category" required class="flex w-full items-center justify-between gap-2 border px-3 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] outline-none bg-white border-purple-200 rounded-xl h-12 appearance-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 cursor-pointer">
+                        <select id="category" name="category_id" required class="flex w-full items-center justify-between gap-2 border px-3 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] outline-none bg-white border-purple-200 rounded-xl h-12 appearance-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 cursor-pointer">
                             <option value="">Pilih kategori...</option>
                             @foreach($categories as $cat)
-                                <option value="{{ $cat }}">{{ $cat }}</option>
+                                <option value="{{ $cat->id }}">{{ $cat->formatted_id }} - {{ $cat->name }}</option>
                             @endforeach
                         </select>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-purple-400 pointer-events-none"><path d="m6 9 6 6 6-6"></path></svg>
@@ -213,7 +214,7 @@
 </div>
 
 <!-- Modal Edit -->
-<div id="editModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4 sm:p-0">
+<div id="editModal" onclick="if(event.target === this) closeEditModal()" class="fixed inset-0 z-50 hidden overflow-y-auto items-center justify-center bg-black/40 backdrop-blur-sm p-4 sm:p-0">
     <div class="relative w-full max-w-[600px] bg-white/95 backdrop-blur-xl rounded-3xl border-2 border-pink-200/50 shadow-2xl p-6 mx-auto sm:my-8">
         <div class="flex flex-col gap-2 text-center sm:text-left">
             <div class="flex items-center gap-3 pb-2">
@@ -233,10 +234,10 @@
                 <div class="space-y-3 p-5 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl border border-purple-100">
                     <label class="flex items-center gap-2 text-sm font-semibold text-purple-900" for="edit_category">Kategori</label>
                     <div class="relative">
-                        <select id="edit_category" name="category" required class="flex w-full items-center justify-between gap-2 border px-3 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] outline-none bg-white border-purple-200 rounded-xl h-12 appearance-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 cursor-pointer">
+                        <select id="edit_category" name="category_id" required class="flex w-full items-center justify-between gap-2 border px-3 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] outline-none bg-white border-purple-200 rounded-xl h-12 appearance-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 cursor-pointer">
                             <option value="">Pilih kategori...</option>
                             @foreach($categories as $cat)
-                                <option value="{{ $cat }}">{{ $cat }}</option>
+                                <option value="{{ $cat->id }}">{{ $cat->formatted_id }} - {{ $cat->name }}</option>
                             @endforeach
                         </select>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-purple-400 pointer-events-none"><path d="m6 9 6 6 6-6"></path></svg>
@@ -264,15 +265,50 @@
 </div>
 
 <script>
-    function openAddModal() { document.getElementById('addModal').classList.remove('hidden'); }
-    function closeAddModal() { document.getElementById('addModal').classList.add('hidden'); }
+    function openAddModal() {
+        document.getElementById('addModal').classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    }
+    function closeAddModal() {
+        document.getElementById('addModal').classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
     function openEditModal(product) {
         document.getElementById('editModal').classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+        
         document.getElementById('editForm').action = `/products/${product.id}`;
         document.getElementById('edit_name').value = product.name;
-        document.getElementById('edit_category').value = product.category;
+        document.getElementById('edit_category').value = product.category_id || '';
         document.getElementById('edit_price').value = product.price;
+        if (product.description) {
+            document.getElementById('edit_description').value = product.description;
+        } else {
+            document.getElementById('edit_description').value = '';
+        }
     }
-    function closeEditModal() { document.getElementById('editModal').classList.add('hidden'); }
+    function closeEditModal() {
+        document.getElementById('editModal').classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    function filterProducts() {
+        const query = document.getElementById('search_input').value.toLowerCase();
+        const category = document.getElementById('category_filter').value;
+        const cards = document.querySelectorAll('.product-card');
+
+        cards.forEach(card => {
+            const name = card.getAttribute('data-name');
+            const cat = card.getAttribute('data-category');
+            const matchesQuery = name.includes(query);
+            const matchesCategory = !category || cat === category;
+
+            if (matchesQuery && matchesCategory) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
 </script>
 @endsection

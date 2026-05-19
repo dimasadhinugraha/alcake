@@ -54,65 +54,60 @@ Route::post('/logout', function (Request $request) {
 
 
 // ==========================================
-// 2. DASHBOARD
+// 2. PROTECTED ROUTES (Requires Login)
 // ==========================================
-Route::get('/', [DashboardController::class, 'index']);
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    // DASHBOARD
+    Route::get('/', [DashboardController::class, 'index']);
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // KATALOG MENU KUE (PRODUCTS)
+    Route::prefix('products')->group(function () {
+        Route::get('/', [ProductController::class, 'index'])->name('products.index');
+        Route::post('/', [ProductController::class, 'store'])->name('products.store');
+        Route::put('/{id}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+        Route::post('/update-stock', [ProductController::class, 'updateStock'])->name('products.update_stock');
+    });
 
-// ==========================================
-// 3. KATALOG MENU KUE (PRODUCTS)
-// ==========================================
-Route::prefix('products')->group(function () {
-    Route::get('/', [ProductController::class, 'index'])->name('products.index');
-    Route::post('/', [ProductController::class, 'store'])->name('products.store');
-    Route::put('/{id}', [ProductController::class, 'update'])->name('products.update');
-    Route::delete('/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
-    Route::post('/update-stock', [ProductController::class, 'updateStock'])->name('products.update_stock');
+    // KATEGORI KUE (CATEGORIES)
+    Route::prefix('categories')->group(function () {
+        Route::get('/', [\App\Http\Controllers\CategoryController::class, 'index'])->name('categories.index');
+        Route::post('/', [\App\Http\Controllers\CategoryController::class, 'store'])->name('categories.store');
+        Route::put('/{id}', [\App\Http\Controllers\CategoryController::class, 'update'])->name('categories.update');
+        Route::delete('/{id}', [\App\Http\Controllers\CategoryController::class, 'destroy'])->name('categories.destroy');
+    });
+
+    // STOK BAHAN BAKU (MATERIALS)
+    Route::prefix('materials')->group(function () {
+        Route::get('/', [MaterialController::class, 'index'])->name('materials.index');
+        Route::post('/store', [MaterialController::class, 'store'])->name('materials.store');
+        Route::post('/update-stock', [MaterialController::class, 'updateStock'])->name('materials.update_stock');
+        Route::put('/{id}', [MaterialController::class, 'update'])->name('materials.update');
+    });
+
+    // PESANAN PRODUKSI (ORDER MANAGEMENT)
+    Route::prefix('orders')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])->name('orders.index');
+        Route::post('/', [OrderController::class, 'store'])->name('orders.store');
+        Route::put('/{id}', [OrderController::class, 'update'])->name('orders.update');
+    });
+
+    // RESEP MASTER (RECIPES)
+    Route::prefix('recipes')->group(function () {
+        Route::get('/', [RecipeController::class, 'index'])->name('recipes.index');
+        Route::post('/', [RecipeController::class, 'store'])->name('recipes.store');
+        Route::put('/{id}', [RecipeController::class, 'update'])->name('recipes.update');
+        Route::delete('/{id}', [RecipeController::class, 'destroy'])->name('recipes.destroy');
+    });
+
+    // TRANSAKSI PEMBAYARAN
+    Route::prefix('transactions')->group(function () {
+        Route::get('/', [TransactionController::class, 'index'])->name('transactions.index');
+        Route::post('/', [TransactionController::class, 'store'])->name('transactions.store');
+        Route::put('/{id}/settle', [TransactionController::class, 'settle'])->name('transactions.settle');
+    });
+
+    // LAPORAN OPERASIONAL
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 });
-
-
-// ==========================================
-// 4. STOK BAHAN BAKU (MATERIALS)
-// ==========================================
-Route::prefix('materials')->group(function () {
-    Route::get('/', [MaterialController::class, 'index'])->name('materials.index');
-    Route::post('/store', [MaterialController::class, 'store'])->name('materials.store');
-    Route::post('/update-stock', [MaterialController::class, 'updateStock'])->name('materials.update_stock');
-});
-
-
-// ==========================================
-// 5. PESANAN PRODUKSI (ORDER MANAGEMENT)
-// ==========================================
-Route::prefix('orders')->group(function () {
-    Route::get('/', [OrderController::class, 'index'])->name('orders.index');
-    Route::post('/', [OrderController::class, 'store'])->name('orders.store');
-});
-
-
-// ==========================================
-// 6. RESEP MASTER (RECIPES)
-// ==========================================
-Route::prefix('recipes')->group(function () {
-    Route::get('/', [RecipeController::class, 'index'])->name('recipes.index');
-    Route::post('/', [RecipeController::class, 'store'])->name('recipes.store');
-    Route::put('/{id}', [RecipeController::class, 'update'])->name('recipes.update');
-    Route::delete('/{id}', [RecipeController::class, 'destroy'])->name('recipes.destroy');
-});
-
-
-// ==========================================
-// 7. TRANSAKSI PEMBAYARAN
-// ==========================================
-Route::prefix('transactions')->group(function () {
-    Route::get('/', [TransactionController::class, 'index'])->name('transactions.index');
-    Route::post('/', [TransactionController::class, 'store'])->name('transactions.store');
-    Route::put('/{id}/settle', [TransactionController::class, 'settle'])->name('transactions.settle');
-});
-
-
-// ==========================================
-// 8. LAPORAN OPERASIONAL
-// ==========================================
-Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');

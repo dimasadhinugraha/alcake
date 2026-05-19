@@ -11,10 +11,10 @@ class ProductController extends Controller
     public function index()
     {
         // Ambil data kue dari database, urutin dari yang terbaru, kasih pagination 5 data per halaman
-        $products = Product::orderBy('created_at', 'desc')->paginate(5);
+        $products = Product::with('categoryRelation')->orderBy('created_at', 'desc')->paginate(5);
 
-        // Daftar kategori buat dropdown di modal
-        $categories = ['Lapis Legit', 'Black Forest', 'Brownies', 'Bolu Jadoel', 'Dessert Box'];
+        // Ambil daftar kategori asli dari database
+        $categories = \App\Models\Category::orderBy('name')->get();
 
         return view('products.index', compact('products', 'categories'));
     }
@@ -25,14 +25,17 @@ class ProductController extends Controller
         // Validasi data input
         $request->validate([
             'name' => 'required|string|max:255|unique:products,name',
-            'category' => 'required|string|max:100',
+            'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
         ]);
+
+        $cat = \App\Models\Category::findOrFail($request->category_id);
 
         // Simpan ke database
         Product::create([
             'name' => $request->name,
-            'category' => $request->category,
+            'category' => $cat->name,
+            'category_id' => $request->category_id,
             'price' => $request->price,
             'stock' => 0, // Konsep Pre-Order: stok awal selalu 0 unit
         ]);
@@ -48,14 +51,17 @@ class ProductController extends Controller
         // Validasi data input (abaikan validasi unik untuk nama kue yang sama dengan dirinya sendiri)
         $request->validate([
             'name' => 'required|string|max:255|unique:products,name,'.$product->id,
-            'category' => 'required|string|max:100',
+            'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
         ]);
+
+        $cat = \App\Models\Category::findOrFail($request->category_id);
 
         // Update data ke database
         $product->update([
             'name' => $request->name,
-            'category' => $request->category,
+            'category' => $cat->name,
+            'category_id' => $request->category_id,
             'price' => $request->price,
         ]);
 

@@ -21,8 +21,10 @@
 <div class="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-400 rounded-xl flex items-center justify-center">
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chef-hat w-6 h-6 text-white"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"></path><path d="M6 17h12"></path></svg>
 </div>
-<div>
-<h4 data-slot="card-title" class="text-xl text-amber-900">{{ $recipe->product_name }}</h4>
+                            <div>
+                                <h4 data-slot="card-title" class="text-xl text-amber-900 font-extrabold">
+                                    <span class="text-xs font-mono font-bold text-amber-600 bg-amber-50 px-2 py-0.5 border border-amber-200 rounded-md mr-1.5">{{ $recipe->formatted_id }}</span>{{ $recipe->product_name }}
+                                </h4>
 <p class="text-sm text-amber-600 mt-1 font-medium">{{ $recipe->ingredients->count() }} bahan baku</p>
 </div>
 </div>

@@ -14,18 +14,30 @@ class Product extends Model
         'price', 
         'description', 
         'category', 
+        'category_id',
         'stock', 
         'status'
     ];
 
-    // Relasi ke Resep (Mungkin sudah ada)
+    // Relasi ke Kategori
+    public function categoryRelation()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    // Auto generate formatted product ID
+    public function getFormattedIdAttribute()
+    {
+        return sprintf('PRD-%04d', $this->id);
+    }
+
+    // Relasi ke Resep
     public function recipes()
     {
         return $this->hasMany(Recipe::class);
     }
 
-    // TAMBAHKAN RELASI INI 👇
-    // Relasi ke Detail Transaksi (Untuk mengetahui produk ini terjual berapa banyak)
+    // Relasi ke Detail Transaksi
     public function details()
     {
         return $this->hasMany(TransactionDetail::class, 'product_id');

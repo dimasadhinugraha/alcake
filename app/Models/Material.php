@@ -6,10 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Material extends Model
 {
-protected $fillable = [
+    protected $fillable = [
         'name',
         'unit',
         'stock',
-        'min_stock' // Pastikan ini ditambahkan!
-    ];    //
+        'min_stock',
+        'max_stock'
+    ];
+
+    // Auto generate formatted material ID (Bahan Baku)
+    public function getFormattedIdAttribute()
+    {
+        return sprintf('BAH-%04d', $this->id);
+    }
 }

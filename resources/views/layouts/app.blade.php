@@ -7,13 +7,18 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
     <style>
         body {
-            font-family: 'Nunito', sans-serif;
+            font-family: 'DM Sans', sans-serif;
             background-color: #FFFBFD;
         }
+
+        h1, h2, h3, h4, h5, h6, .font-outfit {
+            font-family: 'Outfit', sans-serif !important;
+        }
+
         /* Custom Scrollbar tipis */
         ::-webkit-scrollbar {
             width: 6px;
@@ -28,6 +33,34 @@
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #f472b6;
+        }
+
+        /* Page transitions */
+        .animate-page-in {
+            animation: pageFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes pageFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes pageFadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+        }
+        .animate-page-out {
+            animation: pageFadeOut 0.2s cubic-bezier(0.7, 0, 0.84, 0) forwards !important;
         }
     </style>
 </head>
@@ -63,6 +96,11 @@
             <a href="/products" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm {{ request()->is('products*') ? 'bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 font-semibold shadow-sm' : 'text-gray-700 hover:bg-pink-50/50 hover:text-pink-600' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cake w-5 h-5 flex-shrink-0"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"></path><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"></path><path d="M2 21h20"></path><path d="M7 8v3"></path><path d="M12 8v3"></path><path d="M17 8v3"></path><path d="M7 4h.01"></path><path d="M12 4h.01"></path><path d="M17 4h.01"></path></svg>
                 <span class="truncate">Katalog Menu Kue</span>
+            </a>
+
+            <a href="/categories" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm {{ request()->is('categories*') ? 'bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 font-semibold shadow-sm' : 'text-gray-700 hover:bg-pink-50/50 hover:text-pink-600' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag w-5 h-5 flex-shrink-0"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+                <span class="truncate">Kategori Kue</span>
             </a>
             
             <a href="/orders" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm {{ request()->is('orders*') ? 'bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 font-semibold shadow-sm' : 'text-gray-700 hover:bg-pink-50/50 hover:text-pink-600' }}">
@@ -102,9 +140,49 @@
         </div>
     </aside>
 
-    <main class="flex-1 h-full overflow-y-auto relative z-10">
+    <main class="flex-1 h-full overflow-y-auto relative z-10 animate-page-in">
         @yield('content')
     </main>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const main = document.querySelector('main');
+            
+            if (main) {
+                main.addEventListener('animationend', function (e) {
+                    if (e.animationName === 'pageFadeIn') {
+                        main.classList.remove('animate-page-in');
+                    }
+                });
+            }
+
+            const links = document.querySelectorAll('aside nav a[href^="/"]');
+            links.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    if (e.button === 0 && !e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey) {
+                        const targetUrl = this.getAttribute('href');
+                        if (targetUrl && targetUrl !== '#' && !targetUrl.startsWith('#') && targetUrl !== window.location.pathname) {
+                            e.preventDefault();
+                            if (main) {
+                                main.classList.add('animate-page-out');
+                            }
+                            setTimeout(() => {
+                                window.location.href = targetUrl;
+                            }, 200); // Cocok dengan durasi pageFadeOut (0.2s)
+                        }
+                    }
+                });
+            });
+        });
+
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted) {
+                const main = document.querySelector('main');
+                if (main) {
+                    main.classList.remove('animate-page-out');
+                }
+            }
+        });
+    </script>
 </body>
 </html>

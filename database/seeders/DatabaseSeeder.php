@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Material;
 use App\Models\Product;
 use App\Models\Recipe; // Tambahin ini biar bisa manggil tabel resep langsung
+use App\Models\RecipeIngredient;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
 
@@ -33,23 +34,29 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // 4. Bikin Dummy Resep (1 Brownies butuh bahan apa aja?)
-        // Pakai Recipe::create eksplisit biar lu nggak perlu repot setting relasi HasMany di Model Product dulu
-        Recipe::create([
-            'product_id' => $brownies->id,
-            'material_id' => $terigu->id,
-            'quantity_needed' => 0.5
+        $recipe = Recipe::create([
+            'product_name' => 'Brownies Coklat Lumer'
         ]);
 
-        Recipe::create([
-            'product_id' => $brownies->id,
-            'material_id' => $gula->id,
-            'quantity_needed' => 0.2
+        RecipeIngredient::create([
+            'recipe_id' => $recipe->id,
+            'name' => 'Tepung Terigu',
+            'qty' => 0.5,
+            'unit' => 'kg'
         ]);
 
-        Recipe::create([
-            'product_id' => $brownies->id,
-            'material_id' => $coklat->id,
-            'quantity_needed' => 100
+        RecipeIngredient::create([
+            'recipe_id' => $recipe->id,
+            'name' => 'Gula Pasir',
+            'qty' => 0.2,
+            'unit' => 'kg'
+        ]);
+
+        RecipeIngredient::create([
+            'recipe_id' => $recipe->id,
+            'name' => 'Coklat Bubuk',
+            'qty' => 100,
+            'unit' => 'gram'
         ]);
     }
 }
