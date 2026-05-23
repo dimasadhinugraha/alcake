@@ -60,10 +60,6 @@
                         Login
                     </button>
                     
-                    <div class="text-sm text-gray-500 text-center mt-4 space-y-1 p-3 bg-pink-50 rounded-lg">
-                        <p>Demo: username: <strong>Admin Alva Cake</strong> atau email: <strong>admin@admin.com</strong></p>
-                        <p>password: <strong>admin123</strong></p>
-                    </div>
                 </form>
 
                 <div class="mt-8 pt-6 border-t border-pink-100 text-center text-sm text-gray-600 space-y-1">

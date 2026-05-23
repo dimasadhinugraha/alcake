@@ -5,9 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Alva Cake Admin')</title>
 
+    <!-- Hotwire Turbo Instant Loader -->
+    <script src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.12/dist/turbo.es2017-umd.js"></script>
+    <meta name="turbo-cache-control" content="no-preview">
+
     <script src="https://cdn.tailwindcss.com"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+
+    @vite(['resources/js/app.js'])
 
     <style>
         body {
@@ -33,34 +39,6 @@
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #f472b6;
-        }
-
-        /* Page transitions */
-        .animate-page-in {
-            animation: pageFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        @keyframes pageFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        @keyframes pageFadeOut {
-            from {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
-        }
-        .animate-page-out {
-            animation: pageFadeOut 0.2s cubic-bezier(0.7, 0, 0.84, 0) forwards !important;
         }
     </style>
 </head>
@@ -140,49 +118,8 @@
         </div>
     </aside>
 
-    <main class="flex-1 h-full overflow-y-auto relative z-10 animate-page-in">
+    <main class="flex-1 h-full overflow-y-auto relative z-10">
         @yield('content')
     </main>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const main = document.querySelector('main');
-            
-            if (main) {
-                main.addEventListener('animationend', function (e) {
-                    if (e.animationName === 'pageFadeIn') {
-                        main.classList.remove('animate-page-in');
-                    }
-                });
-            }
-
-            const links = document.querySelectorAll('aside nav a[href^="/"]');
-            links.forEach(link => {
-                link.addEventListener('click', function (e) {
-                    if (e.button === 0 && !e.ctrlKey && !e.shiftKey && !e.metaKey && !e.altKey) {
-                        const targetUrl = this.getAttribute('href');
-                        if (targetUrl && targetUrl !== '#' && !targetUrl.startsWith('#') && targetUrl !== window.location.pathname) {
-                            e.preventDefault();
-                            if (main) {
-                                main.classList.add('animate-page-out');
-                            }
-                            setTimeout(() => {
-                                window.location.href = targetUrl;
-                            }, 200); // Cocok dengan durasi pageFadeOut (0.2s)
-                        }
-                    }
-                });
-            });
-        });
-
-        window.addEventListener('pageshow', function (event) {
-            if (event.persisted) {
-                const main = document.querySelector('main');
-                if (main) {
-                    main.classList.remove('animate-page-out');
-                }
-            }
-        });
-    </script>
 </body>
 </html>

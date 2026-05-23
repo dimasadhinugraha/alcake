@@ -10,8 +10,8 @@ class ProductController extends Controller
     // 1. Tampilkan Halaman Katalog Kue
     public function index()
     {
-        // Ambil data kue dari database, urutin dari yang terbaru, kasih pagination 5 data per halaman
-        $products = Product::with('categoryRelation')->orderBy('created_at', 'desc')->paginate(5);
+        // Ambil data kue dari database, urutin dari yang terbaru, kasih pagination 9 data per halaman
+        $products = Product::with('categoryRelation')->orderBy('created_at', 'desc')->paginate(9);
 
         // Ambil daftar kategori asli dari database
         $categories = \App\Models\Category::orderBy('name')->get();
