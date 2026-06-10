@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Alva Cake Admin')</title>
 
-    <!-- Hotwire Turbo Instant Loader -->
-    <script src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@8.0.12/dist/turbo.es2017-umd.js"></script>
-    <meta name="turbo-cache-control" content="no-preview">
-
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
@@ -18,7 +15,7 @@
     <style>
         body {
             font-family: 'DM Sans', sans-serif;
-            background-color: #FFFBFD;
+            background-color: #ffffff;
         }
 
         h1, h2, h3, h4, h5, h6, .font-outfit {
@@ -39,6 +36,30 @@
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #f472b6;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.35s ease-out forwards;
+        }
+
+        @keyframes pageFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .animate-page-fade {
+            animation: pageFade 0.3s ease-out forwards;
+        }
+
+        @keyframes scaleUp {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-scale-up {
+            animation: scaleUp 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
     </style>
 </head>
@@ -83,7 +104,7 @@
             
             <a href="/orders" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm {{ request()->is('orders*') ? 'bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 font-semibold shadow-sm' : 'text-gray-700 hover:bg-pink-50/50 hover:text-pink-600' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-list w-5 h-5 flex-shrink-0"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg>
-                <span class="truncate">Pesanan Produksi</span>
+                <span class="truncate">Produksi Pesanan</span>
             </a>
             
             <a href="/materials" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm {{ request()->is('materials*') ? 'bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 font-semibold shadow-sm' : 'text-gray-700 hover:bg-pink-50/50 hover:text-pink-600' }}">
@@ -118,8 +139,106 @@
         </div>
     </aside>
 
-    <main class="flex-1 h-full overflow-y-auto relative z-10">
-        @yield('content')
+    <main class="flex-1 h-full overflow-y-auto relative z-10 bg-[#fef2f5] animate-page-fade">
+        <!-- Floating Bakery Background Elements -->
+        <div class="fixed inset-0 pointer-events-none overflow-hidden opacity-20 z-0">
+            <div class="absolute top-10 right-10 w-72 h-72 rounded-3xl overflow-hidden transform rotate-12 blur-sm">
+                <img src="https://images.unsplash.com/photo-1587241321921-91a834d82ffc?w=800" alt="Cupcakes" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute bottom-20 left-10 w-64 h-64 rounded-full overflow-hidden blur-sm">
+                <img src="https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?w=800" alt="Macarons" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute top-1/2 right-1/4 w-56 h-56 rounded-3xl overflow-hidden transform -rotate-12 blur-sm">
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800" alt="Donuts" class="w-full h-full object-cover">
+            </div>
+            <div class="absolute bottom-40 right-20 w-48 h-48 rounded-full overflow-hidden blur-sm">
+                <img src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=800" alt="Cookies" class="w-full h-full object-cover">
+            </div>
+        </div>
+
+        <div class="relative z-10">
+            @yield('content')
+        </div>
+
+        <!-- Turbo Session Flash Messages -->
+        @if(session('success'))
+            <div class="turbo-flash hidden" data-message="{{ session('success') }}" data-type="success"></div>
+        @endif
+        @if(session('error'))
+            <div class="turbo-flash hidden" data-message="{{ session('error') }}" data-type="error"></div>
+        @endif
     </main>
+
+    <!-- Sonner-style Toast Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-[9999] flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+    <script>
+        window.showToast = function(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = `pointer-events-auto bg-white border border-slate-100 rounded-[1.2rem] p-4 shadow-[0_10px_35px_rgba(0,0,0,0.06)] flex items-center gap-3 transition-all duration-300 transform translate-x-full opacity-0 max-w-sm`;
+            
+            let iconHtml = '';
+            if (type === 'success') {
+                iconHtml = `
+                    <div class="w-6 h-6 rounded-full bg-neutral-900 text-white flex items-center justify-center shrink-0 shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" /></svg>
+                    </div>`;
+            } else if (type === 'error') {
+                iconHtml = `
+                    <div class="w-6 h-6 rounded-full bg-red-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" /></svg>
+                    </div>`;
+            } else {
+                iconHtml = `
+                    <div class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" /></svg>
+                    </div>`;
+            }
+
+            toast.innerHTML = `
+                ${iconHtml}
+                <div class="flex-1">
+                    <p class="text-xs font-semibold text-slate-800 leading-snug">${message}</p>
+                </div>
+                <button type="button" class="text-slate-300 hover:text-slate-500 transition shrink-0 ml-1 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            `;
+
+            const closeBtn = toast.querySelector('button');
+            closeBtn.addEventListener('click', () => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            });
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-x-full', 'opacity-0');
+            }, 50);
+
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.classList.add('translate-x-full', 'opacity-0');
+                    setTimeout(() => {
+                        if (toast.parentNode) toast.remove();
+                    }, 300);
+                }
+            }, 5000);
+        };
+
+        // Listen for session flashes
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.turbo-flash').forEach(function(el) {
+                const message = el.getAttribute('data-message');
+                const type = el.getAttribute('data-type') || 'success';
+                window.showToast(message, type);
+                el.remove(); // Remove immediately so cache or back navigation doesn't trigger it again
+            });
+        });
+    </script>
 </body>
 </html>

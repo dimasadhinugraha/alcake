@@ -3,7 +3,7 @@
 @section('title', 'Transaksi Penjualan - Alva Cake')
 
 @section('content')
-<div class="p-8 bg-[#FFFBFD] min-h-full relative overflow-hidden flex flex-col">
+<div class="p-8 bg-transparent min-h-full relative overflow-hidden flex flex-col">
     <header class="flex justify-between items-end relative z-10 mb-8">
         <div>
             <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#A72BEE] to-[#D82A97] mb-2">
@@ -95,7 +95,7 @@
     </div>
 </div>
 
-<div id="transactionModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gray-900/40 backdrop-blur-sm transition-opacity py-10">
+<div id="transactionModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 transition-opacity py-10 animate-fade-in">
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg mx-4 flex flex-col max-h-full">
 
         <div class="flex justify-between items-center p-6 border-b border-gray-100 shrink-0">

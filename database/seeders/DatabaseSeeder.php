@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // 1. Bikin User Admin
-        User::create([
+        $admin = User::create([
             'name' => 'Admin Alva Cake',
             'email' => 'admin@admin.com',
             'password' => Hash::make('admin123'),
@@ -253,6 +253,7 @@ class DatabaseSeeder extends Seeder
             $catId = isset($categories[$catName]) ? $categories[$catName]->id : null;
 
             Product::create([
+                'user_id' => $admin->id,
                 'name' => $pData['name'],
                 'category' => $catName,
                 'category_id' => $catId,
@@ -384,6 +385,7 @@ class DatabaseSeeder extends Seeder
 
         $order1 = Order::create([
             'customer' => 'Budi Santoso',
+            'phone' => '081234567890',
             'status' => 'Pending',
             'order_date' => $today,
             'finish_date' => date('Y-m-d', strtotime($today . ' + 2 days')),
@@ -396,6 +398,7 @@ class DatabaseSeeder extends Seeder
 
         $order2 = Order::create([
             'customer' => 'Siti Rahma',
+            'phone' => '082345678901',
             'status' => 'Diproses',
             'order_date' => $yesterday,
             'finish_date' => date('Y-m-d', strtotime($yesterday . ' + 3 days')),
@@ -408,6 +411,7 @@ class DatabaseSeeder extends Seeder
 
         $order3 = Order::create([
             'customer' => 'Rian Hidayat',
+            'phone' => '083456789012',
             'status' => 'Selesai',
             'order_date' => $fiveDaysAgo,
             'finish_date' => date('Y-m-d', strtotime($fiveDaysAgo . ' + 2 days')),
@@ -421,6 +425,7 @@ class DatabaseSeeder extends Seeder
 
         $order4 = Order::create([
             'customer' => 'Dewi Lestari',
+            'phone' => '084567890123',
             'status' => 'Dibatalkan',
             'order_date' => $twoDaysAgo,
             'finish_date' => date('Y-m-d', strtotime($twoDaysAgo . ' + 2 days')),
@@ -433,6 +438,7 @@ class DatabaseSeeder extends Seeder
 
         $order5 = Order::create([
             'customer' => 'Agus Pratama',
+            'phone' => '085678901234',
             'status' => 'Diproses',
             'order_date' => $today,
             'finish_date' => date('Y-m-d', strtotime($today . ' + 2 days')),
@@ -446,6 +452,7 @@ class DatabaseSeeder extends Seeder
 
         // 9. Bikin Dummy Riwayat Transaksi (Transactions)
         Transaction::create([
+            'order_id' => $order3->id,
             'customer' => 'Rian Hidayat',
             'admin' => 'Admin Alva Cake',
             'type' => 'Lunas',
@@ -453,10 +460,12 @@ class DatabaseSeeder extends Seeder
             'paid' => 275000,
             'total' => 275000,
             'payment_date' => $fiveDaysAgo,
+            'notes' => $order3->notes,
             'products' => $order3->products
         ]);
 
         Transaction::create([
+            'order_id' => $order2->id,
             'customer' => 'Siti Rahma',
             'admin' => 'Admin Alva Cake',
             'type' => 'DP',
@@ -464,10 +473,13 @@ class DatabaseSeeder extends Seeder
             'paid' => 200000,
             'total' => 500000,
             'payment_date' => $yesterday,
+            'dp_nota' => 'DP-001',
+            'notes' => $order2->notes,
             'products' => $order2->products
         ]);
 
         Transaction::create([
+            'order_id' => $order5->id,
             'customer' => 'Agus Pratama',
             'admin' => 'Admin Alva Cake',
             'type' => 'Lunas',
@@ -475,6 +487,7 @@ class DatabaseSeeder extends Seeder
             'paid' => 220000,
             'total' => 220000,
             'payment_date' => $today,
+            'notes' => $order5->notes,
             'products' => $order5->products
         ]);
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Recipe;
 use App\Models\RecipeIngredient;
 use App\Models\Material; // Ambil dari tabel bahan baku asli
+use App\Models\Product; // Ambil dari katalog produk kue
 use Illuminate\Http\Request;
 
 class RecipeController extends Controller
@@ -14,8 +15,8 @@ class RecipeController extends Controller
         // 1. Tarik semua resep dari database beserta bahan-bahannya
         $recipes = Recipe::with('ingredients')->get();
 
-        // 2. Ambil list Produk Kue untuk dropdown (bisa hardcode atau ambil dari DB products)
-        $availableProducts = ['Kue Ulang Tahun Coklat', 'Black Forest', 'Nastar', 'Klapertart', 'Brownies Panggang', 'Bolu Jadoel'];
+        // 2. Ambil list nama Produk Kue untuk dropdown dari database products
+        $availableProducts = Product::pluck('name')->toArray();
 
         // 3. Ambil list Bahan Baku asli dari database materials lu
         $availableMaterials = Material::all();

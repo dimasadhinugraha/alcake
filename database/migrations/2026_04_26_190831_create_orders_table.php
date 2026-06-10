@@ -14,6 +14,7 @@ public function up()
     Schema::create('orders', function (Blueprint $table) {
         $table->id();
         $table->string('customer'); // Nama pelanggan
+        $table->string('phone')->nullable(); // Nomor telepon pelanggan
         $table->string('status'); // Pending, Diproses, Selesai
         $table->date('order_date'); // Tanggal pemesanan
         $table->date('finish_date')->nullable(); // Estimasi selesai

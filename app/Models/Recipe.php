@@ -18,4 +18,18 @@ class Recipe extends Model
     {
         return $this->hasMany(RecipeIngredient::class);
     }
+
+    // Relasi: Banyak resep terhubung ke banyak bahan (Material)
+    public function materials()
+    {
+        return $this->belongsToMany(Material::class, 'recipe_ingredients', 'recipe_id', 'name', 'id', 'name')
+                    ->withPivot('qty', 'unit')
+                    ->withTimestamps();
+    }
+
+    // Relasi ke Product (Kue)
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_name', 'name');
+    }
 }

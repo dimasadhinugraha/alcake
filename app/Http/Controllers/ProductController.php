@@ -27,17 +27,22 @@ class ProductController extends Controller
             'name' => 'required|string|max:255|unique:products,name',
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
+            'unit' => 'nullable|string|max:50',
+            'description' => 'nullable|string',
         ]);
 
         $cat = \App\Models\Category::findOrFail($request->category_id);
 
         // Simpan ke database
         Product::create([
+            'user_id' => auth()->id(),
             'name' => $request->name,
             'category' => $cat->name,
             'category_id' => $request->category_id,
             'price' => $request->price,
             'stock' => 0, // Konsep Pre-Order: stok awal selalu 0 unit
+            'unit' => $request->unit ?? 'pcs',
+            'description' => $request->description,
         ]);
 
         return redirect()->route('products.index')->with('success', 'Kue baru berhasil ditambahkan!');
@@ -53,6 +58,8 @@ class ProductController extends Controller
             'name' => 'required|string|max:255|unique:products,name,'.$product->id,
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
+            'unit' => 'nullable|string|max:50',
+            'description' => 'nullable|string',
         ]);
 
         $cat = \App\Models\Category::findOrFail($request->category_id);
@@ -63,6 +70,8 @@ class ProductController extends Controller
             'category' => $cat->name,
             'category_id' => $request->category_id,
             'price' => $request->price,
+            'unit' => $request->unit ?? 'pcs',
+            'description' => $request->description,
         ]);
 
         return redirect()->route('products.index')->with('success', 'Data kue berhasil diperbarui!');

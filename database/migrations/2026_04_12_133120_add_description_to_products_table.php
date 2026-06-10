@@ -13,13 +13,16 @@ return new class extends Migration
             if (!Schema::hasColumn('products', 'description')) {
                 $table->text('description')->nullable()->after('status');
             }
+            if (!Schema::hasColumn('products', 'unit')) {
+                $table->string('unit')->default('pcs')->after('description');
+            }
         });
     }
 
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('description');
+            $table->dropColumn(['description', 'unit']);
         });
     }
 };

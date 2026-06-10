@@ -5,9 +5,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
-    protected $fillable = ['customer', 'admin', 'type', 'status', 'paid', 'total', 'payment_date', 'dp_nota', 'products'];
+    protected $fillable = ['order_id', 'customer', 'admin', 'type', 'status', 'paid', 'total', 'payment_date', 'dp_nota', 'settlement_nota', 'notes'];
 
-    protected $casts = [
-        'products' => 'array', // Biar otomatis jadi array di PHP
-    ];
+    protected $casts = [];
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    // Accessor untuk mensimulasikan kolom JSON products secara dinamis dari relasi Order
+    public function getProductsAttribute()
+    {
+        return $this->order ? $this->order->products : [];
+    }
 }

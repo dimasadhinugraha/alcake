@@ -13,6 +13,7 @@ public function up(): void
 {
     Schema::create('products', function (Blueprint $table) {
         $table->id();
+        $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
         $table->string('name');
         $table->decimal('price', 15, 2);
         $table->string('image')->nullable();

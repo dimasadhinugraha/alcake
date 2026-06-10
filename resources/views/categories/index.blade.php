@@ -95,8 +95,9 @@
 </div>
 
 <!-- Modal Tambah Kategori -->
-<div id="addModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gray-900/50 backdrop-blur-sm transition-opacity">
-    <div role="dialog" class="fixed top-[50%] left-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 p-6 duration-200 sm:max-w-lg max-w-3xl bg-gradient-to-br from-white to-pink-50/30 rounded-[2rem] border-4 border-pink-200/50 shadow-2xl" tabindex="-1">
+<div id="addModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 animate-fade-in">
+    <div onclick="closeAddModal()" class="absolute inset-0 bg-black/50 transition-opacity z-0" aria-hidden="true"></div>
+    <div role="dialog" class="relative w-full max-w-lg bg-white to-pink-50/30 rounded-[2rem] border-4 border-pink-200/50 shadow-2xl p-6 flex flex-col z-10 animate-scale-up" tabindex="-1">
         <div class="flex items-center gap-4 pb-3 border-b border-pink-100">
             <div class="w-14 h-14 bg-gradient-to-br from-pink-500 to-rose-500 rounded-2xl flex items-center justify-center shadow-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag w-7 h-7 text-white"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
@@ -123,8 +124,9 @@
 </div>
 
 <!-- Modal Edit Kategori -->
-<div id="editModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-gray-900/50 backdrop-blur-sm transition-opacity">
-    <div role="dialog" class="fixed top-[50%] left-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 p-6 duration-200 sm:max-w-lg max-w-3xl bg-gradient-to-br from-white to-pink-50/30 rounded-[2rem] border-4 border-pink-200/50 shadow-2xl" tabindex="-1">
+<div id="editModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 animate-fade-in">
+    <div onclick="closeEditModal()" class="absolute inset-0 bg-black/50 transition-opacity z-0" aria-hidden="true"></div>
+    <div role="dialog" class="relative w-full max-w-lg bg-gradient-to-br from-white to-pink-50/30 rounded-[2rem] border-4 border-pink-200/50 shadow-2xl p-6 flex flex-col z-10 animate-scale-up" tabindex="-1">
         <div class="flex items-center gap-4 pb-3 border-b border-pink-100">
             <div class="w-14 h-14 bg-gradient-to-br from-pink-500 to-rose-500 rounded-2xl flex items-center justify-center shadow-lg">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag w-7 h-7 text-white"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
@@ -152,13 +154,37 @@
 </div>
 
 <script>
-    function openAddModal() { document.getElementById('addModal').classList.remove('hidden'); }
-    function closeAddModal() { document.getElementById('addModal').classList.add('hidden'); }
+    function openAddModal() {
+        document.getElementById('addModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        const mainEl = document.querySelector('main');
+        if (mainEl) mainEl.style.overflow = 'hidden';
+    }
+    function closeAddModal() {
+        document.getElementById('addModal').classList.add('hidden');
+        document.body.style.overflow = '';
+        const mainEl = document.querySelector('main');
+        if (mainEl) mainEl.style.overflow = '';
+    }
     function openEditModal(category) {
         document.getElementById('editModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        const mainEl = document.querySelector('main');
+        if (mainEl) mainEl.style.overflow = 'hidden';
+        
         document.getElementById('editForm').action = `/categories/${category.id}`;
         document.getElementById('edit_name').value = category.name;
     }
-    function closeEditModal() { document.getElementById('editModal').classList.add('hidden'); }
+    function closeEditModal() {
+        document.getElementById('editModal').classList.add('hidden');
+        document.body.style.overflow = '';
+        const mainEl = document.querySelector('main');
+        if (mainEl) mainEl.style.overflow = '';
+    }
+
+    window.openAddModal = openAddModal;
+    window.closeAddModal = closeAddModal;
+    window.openEditModal = openEditModal;
+    window.closeEditModal = closeEditModal;
 </script>
 @endsection

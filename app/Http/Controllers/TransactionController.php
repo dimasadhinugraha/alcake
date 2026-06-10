@@ -58,8 +58,15 @@ class TransactionController extends Controller
         // Otomatis tentuin status: Kalau bayarnya kurang dari total, berarti "Belum Lunas"
         $status = ($request->paid >= $order->total) ? 'Lunas' : 'Belum Lunas';
 
+        $dp_nota = null;
+        if ($request->type === 'DP') {
+            $nextId = (Transaction::max('id') ?? 0) + 1;
+            $dp_nota = 'DP-' . str_pad($nextId, 3, '0', STR_PAD_LEFT);
+        }
+
         // Simpan ke tabel Transaksi
         Transaction::create([
+            'order_id' => $order->id,
             'customer' => $order->customer,
             'admin' => 'Admin Alva Cake', // Nanti bisa diganti pakai Auth::user()->name
             'type' => $request->type, // Lunas / DP
@@ -67,7 +74,8 @@ class TransactionController extends Controller
             'paid' => $request->paid,
             'total' => $order->total,
             'payment_date' => $request->payment_date,
-            'products' => $order->products, // Copy detail produk dari order ke nota transaksi
+            'dp_nota' => $dp_nota,
+            'notes' => $order->notes,
         ]);
 
         // Opsional: Kalau udah lunas, status pesanannya bisa otomatis diubah jadi "Diproses" atau "Selesai"
@@ -90,6 +98,11 @@ class TransactionController extends Controller
         // Simpan tanggal pelunasan jika perlu
         if($request->has('payment_date')) {
             $transaction->payment_date = $request->payment_date;
+        }
+
+        // Simpan nota pelunasan jika ada
+        if($request->filled('settlement_nota')) {
+            $transaction->settlement_nota = $request->settlement_nota;
         }
 
         $transaction->save();

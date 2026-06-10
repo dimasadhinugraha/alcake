@@ -25,6 +25,7 @@ class MaterialController extends Controller
         $inboundHistory = MaterialHistory::where('type', 'inbound')->orderBy('created_at', 'desc')->get()->map(function($h) {
             return (object)[
                 'date' => $h->created_at->translatedFormat('d M Y'),
+                'raw_date' => $h->created_at->format('Y-m-d'),
                 'time' => $h->created_at->format('H.i'),
                 'name' => $h->material_name,
                 'qty' => '+' . $h->qty,
@@ -36,6 +37,7 @@ class MaterialController extends Controller
         $outboundHistory = MaterialHistory::where('type', 'outbound')->orderBy('created_at', 'desc')->get()->map(function($h) {
             return (object)[
                 'date' => $h->created_at->translatedFormat('d M Y'),
+                'raw_date' => $h->created_at->format('Y-m-d'),
                 'time' => $h->created_at->format('H.i'),
                 'name' => $h->material_name,
                 'qty' => '-' . $h->qty,
@@ -109,15 +111,28 @@ class MaterialController extends Controller
         return redirect()->back()->with('success', 'Stok berhasil ditambah!');
     }
 
-    // Fungsi: Modal Edit Stok Bahan Baku (Warna Biru)
     public function update(Request $request, $id)
     {
         $material = Material::findOrFail($id);
 
+        // Form 1: Edit Name & Unit (Purple Modal)
+        if ($request->has('name')) {
+            $request->validate([
+                'name' => 'required|string|unique:materials,name,' . $id,
+                'unit' => 'required|string',
+            ]);
+            $material->update([
+                'name' => $request->name,
+                'unit' => $request->unit,
+            ]);
+            return redirect()->route('materials.index')->with('success', 'Nama & Satuan bahan baku berhasil diperbarui!');
+        }
+
+        // Form 2: Edit Stock settings (Green Modal)
         $request->validate([
             'stock' => 'required|numeric|min:0',
             'min_stock' => 'required|numeric|min:0',
-            'max_stock' => 'required|numeric|min:0',
+            'max_stock' => 'nullable|numeric|min:0',
         ]);
 
         $oldStock = $material->stock;
@@ -141,6 +156,6 @@ class MaterialController extends Controller
             ]);
         }
 
-        return redirect()->route('materials.index')->with('success', 'Data stok bahan baku berhasil diperbarui!');
+        return redirect()->route('materials.index')->with('success', 'Pengaturan stok bahan baku berhasil diperbarui!');
     }
 }
