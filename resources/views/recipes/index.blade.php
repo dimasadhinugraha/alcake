@@ -48,7 +48,7 @@
 </div>
 </div>
 <div class="flex gap-2">
-<button data-recipe="{{ json_encode(['id' => $recipe->id, 'product_name' => $recipe->product_name, 'ingredients' => $recipe->ingredients->toArray()]) }}" onclick="openModal('edit', this.getAttribute('data-recipe'))" data-slot="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:hover:bg-accent/50 h-8 gap-1.5 px-3 has-[&gt;svg]:px-2.5 text-amber-600 hover:text-amber-700 hover:bg-amber-50 rounded-xl">
+<button data-recipe="{{ json_encode(['id' => $recipe->id, 'product_id' => $recipe->product_id, 'product_name' => $recipe->product_name, 'ingredients' => $recipe->ingredients->toArray()]) }}" onclick="openModal('edit', this.getAttribute('data-recipe'))" data-slot="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:hover:bg-accent/50 h-8 gap-1.5 px-3 has-[&gt;svg]:px-2.5 text-amber-600 hover:text-amber-700 hover:bg-amber-50 rounded-xl">
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-pen w-4 h-4"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"></path></svg>
 </button>
 <form method="POST" action="{{ route('recipes.destroy', $recipe->id) }}" style="display:inline;" onsubmit="return confirm('Yakin hapus resep ini?');">
@@ -120,7 +120,7 @@
             <label class="flex items-center gap-2 select-none text-sm font-semibold text-amber-800">Produk</label>
             <div class="relative">
               <input type="text" id="product_search_input" placeholder="Cari & pilih produk kue..." class="flex w-full px-4 py-2 text-sm transition-[color,box-shadow] outline-none focus-visible:ring-[3px] bg-white border-2 border-amber-200 rounded-xl h-12 font-semibold focus:ring-2 focus:ring-amber-500 pr-10" autocomplete="off" required>
-              <input type="hidden" id="product_name" name="product_name" required>
+              <input type="hidden" id="product_id" name="product_id" required>
               <div class="absolute right-3.5 top-3.5 text-amber-400 pointer-events-none">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
               </div>
@@ -202,14 +202,14 @@
         if (!dropdownContainer) return;
         
         const searchInput = document.getElementById('product_search_input');
-        const hiddenInput = document.getElementById('product_name');
+        const hiddenInput = document.getElementById('product_id');
         const dropdownList = document.getElementById('product_dropdown_list');
 
         function renderDropdown(filterText = '') {
             const query = filterText.toLowerCase().trim();
             dropdownList.innerHTML = '';
             
-            const filtered = availableProducts.filter(prod => prod.toLowerCase().includes(query));
+            const filtered = availableProducts.filter(prod => prod.name.toLowerCase().includes(query));
             
             if (filtered.length === 0) {
                 dropdownList.innerHTML = `
@@ -222,7 +222,7 @@
             filtered.forEach(product => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 hover:text-amber-900 cursor-pointer transition-all duration-150';
-                itemDiv.innerText = product;
+                itemDiv.innerText = product.name;
                 itemDiv.onclick = () => {
                     selectProduct(product);
                 };
@@ -230,9 +230,9 @@
             });
         }
 
-        function selectProduct(productName) {
-            searchInput.value = productName;
-            hiddenInput.value = productName;
+        function selectProduct(product) {
+            searchInput.value = product.name;
+            hiddenInput.value = product.id;
             dropdownList.classList.add('hidden');
         }
 
@@ -250,7 +250,8 @@
             if (!dropdownContainer.contains(e.target)) {
                 dropdownList.classList.add('hidden');
                 if (hiddenInput.value) {
-                    searchInput.value = hiddenInput.value;
+                    const sel = availableProducts.find(p => p.id == hiddenInput.value);
+                    searchInput.value = sel ? sel.name : '';
                 } else {
                     searchInput.value = '';
                 }
@@ -271,7 +272,7 @@
         const title = document.getElementById('modalTitle');
         const methodField = document.getElementById('methodField');
         const btnSubmit = document.getElementById('btnSubmit');
-        const productSelect = document.getElementById('product_name');
+        const productSelect = document.getElementById('product_id');
         const searchInput = document.getElementById('product_search_input');
 
         if(mode === 'create') {
@@ -288,8 +289,11 @@
             btnSubmit.innerText = 'Update Resep';
             methodField.value = 'PUT';
             form.action = `/recipes/${recipeData.id}`;
-            productSelect.value = recipeData.product_name;
-            if (searchInput) searchInput.value = recipeData.product_name;
+            productSelect.value = recipeData.product_id;
+            if (searchInput) {
+                const sel = availableProducts.find(p => p.id == recipeData.product_id);
+                searchInput.value = sel ? sel.name : (recipeData.product_name || '');
+            }
             currentIngredients = [...recipeData.ingredients];
         }
         renderIngredients();

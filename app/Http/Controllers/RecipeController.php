@@ -13,10 +13,18 @@ class RecipeController extends Controller
     public function index()
     {
         // 1. Tarik semua resep dari database beserta bahan-bahannya
-        $recipes = Recipe::with('ingredients')->get();
+        $recipes = Recipe::with('ingredients', 'product')->get();
 
-        // 2. Ambil list nama Produk Kue untuk dropdown dari database products
-        $availableProducts = Product::pluck('name')->toArray();
+        // 2. Ambil list Produk Kue untuk dropdown dari database products
+        $availableProducts = Product::orderBy('name')
+            ->get()
+            ->map(function ($p) {
+                return [
+                    'id' => $p->id,
+                    'name' => $p->name,
+                ];
+            })
+            ->values();
 
         // 3. Ambil list Bahan Baku asli dari database materials lu
         $availableMaterials = Material::all();
@@ -28,16 +36,16 @@ class RecipeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'product_name' => 'required|string|unique:recipes,product_name',
+            'product_id' => 'required|integer|unique:recipes,product_id',
             'ingredients' => 'required|array|min:1', // Wajib ada minimal 1 bahan
         ], [
-            'product_name.unique' => 'Resep untuk kue ini sudah ada!',
+            'product_id.unique' => 'Resep untuk kue ini sudah ada!',
             'ingredients.required' => 'Minimal harus ada 1 bahan baku!'
         ]);
 
         // 1. Simpan nama resep (Kue)
         $recipe = Recipe::create([
-            'product_name' => $request->product_name
+            'product_id' => $request->product_id
         ]);
 
         // 2. Looping array ingredients dari JS, lalu simpan ke database
@@ -57,12 +65,12 @@ class RecipeController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'product_name' => 'required|string|unique:recipes,product_name,'.$id,
+            'product_id' => 'required|integer|unique:recipes,product_id,'.$id,
             'ingredients' => 'required|array|min:1',
         ]);
 
         $recipe = Recipe::findOrFail($id);
-        $recipe->update(['product_name' => $request->product_name]);
+        $recipe->update(['product_id' => $request->product_id]);
 
         // Cara paling gampang update relasi One-to-Many:
         // Hapus semua bahan lama milik resep ini, lalu masukin yang baru dari form

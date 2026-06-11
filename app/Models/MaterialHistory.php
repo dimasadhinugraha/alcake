@@ -16,6 +16,17 @@ class MaterialHistory extends Model
         'type',
         'qty',
         'notes',
-        'product_name'
+        'product_name',
+        'product_id'
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+    
+    public function material()
+    {
+        return $this->belongsTo(Material::class);
+    }
 }

@@ -21,9 +21,9 @@ class TransactionController extends Controller
         });
         $totalLunas = $transactions->where('status', 'Lunas')->sum('paid');
 
-        // 3. AMBIL DATA PESANAN ASLI DARI DATABASE (The Magic 🪄)
-        // Kita ambil pesanan yang belum selesai aja biar dropdown-nya gak kepanjangan
-        $pendingOrders = Order::where('status', '!=', 'Selesai')
+        // Kita ambil pesanan yang belum punya transaksi (dan bukan dibatalkan) dengan eager loading produk agar bisa dibayar
+        $pendingOrders = Order::with('productsRelation')->doesntHave('transaction')
+            ->where('status', '!=', 'Dibatalkan')
             ->orderBy('created_at', 'desc')
             ->get()
             ->map(function($order) {

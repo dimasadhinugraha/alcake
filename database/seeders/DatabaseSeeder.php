@@ -264,9 +264,18 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        // Ambil data produk untuk dihubungkan
+        $prd_brownies = Product::where('name', 'Brownies Coklat Lumer')->first();
+        $prd_lapis = Product::where('name', 'Lapis Legit Original')->first();
+        $prd_bf_classic = Product::where('name', 'Black Forest Classic')->first();
+        $prd_bf_roll = Product::where('name', 'Black Forest Roll')->first();
+        $prd_red_velvet = Product::where('name', 'Dessert Box Red Velvet Cheese')->first();
+        $prd_lotus = Product::where('name', 'Dessert Box Lotus Biscoff')->first();
+        $prd_chiffon = Product::where('name', 'Bolu Chiffon Pandan Santan')->first();
+
         // 5. Bikin Dummy Resep & Bahan untuk Brownies Coklat Lumer
         $recipeBrownies = Recipe::create([
-            'product_name' => 'Brownies Coklat Lumer'
+            'product_id' => $prd_brownies->id
         ]);
 
         RecipeIngredient::create([
@@ -306,7 +315,7 @@ class DatabaseSeeder extends Seeder
 
         // 6. Bikin Dummy Resep & Bahan untuk Lapis Legit Original
         $recipeLapis = Recipe::create([
-            'product_name' => 'Lapis Legit Original'
+            'product_id' => $prd_lapis->id
         ]);
 
         RecipeIngredient::create([
@@ -339,7 +348,7 @@ class DatabaseSeeder extends Seeder
 
         // 7. Bikin Dummy Resep & Bahan untuk Black Forest Classic
         $recipeBF = Recipe::create([
-            'product_name' => 'Black Forest Classic'
+            'product_id' => $prd_bf_classic->id
         ]);
 
         RecipeIngredient::create([
@@ -391,9 +400,11 @@ class DatabaseSeeder extends Seeder
             'finish_date' => date('Y-m-d', strtotime($today . ' + 2 days')),
             'notes' => 'Minta topping coklat ganache-nya agak tebal ya kak. Terima kasih!',
             'total' => 225000,
-            'products' => [
-                ['id' => 10, 'name' => 'Brownies Coklat Lumer', 'price' => 75000, 'qty' => 3, 'subtotal' => 225000]
-            ]
+        ]);
+        $order1->productsRelation()->attach($prd_brownies->id, [
+            'qty' => 3,
+            'price' => $prd_brownies->price,
+            'subtotal' => 3 * $prd_brownies->price
         ]);
 
         $order2 = Order::create([
@@ -404,9 +415,11 @@ class DatabaseSeeder extends Seeder
             'finish_date' => date('Y-m-d', strtotime($yesterday . ' + 3 days')),
             'notes' => 'Untuk arisan keluarga besar hari minggu sore.',
             'total' => 500000,
-            'products' => [
-                ['id' => 1, 'name' => 'Lapis Legit Original', 'price' => 250000, 'qty' => 2, 'subtotal' => 500000]
-            ]
+        ]);
+        $order2->productsRelation()->attach($prd_lapis->id, [
+            'qty' => 2,
+            'price' => $prd_lapis->price,
+            'subtotal' => 2 * $prd_lapis->price
         ]);
 
         $order3 = Order::create([
@@ -417,10 +430,16 @@ class DatabaseSeeder extends Seeder
             'finish_date' => date('Y-m-d', strtotime($fiveDaysAgo . ' + 2 days')),
             'notes' => 'Tulis ucapan "Happy Birthday Ayah" warna merah muda di atas kue.',
             'total' => 275000,
-            'products' => [
-                ['id' => 6, 'name' => 'Black Forest Classic', 'price' => 180000, 'qty' => 1, 'subtotal' => 180000],
-                ['id' => 9, 'name' => 'Black Forest Roll', 'price' => 95000, 'qty' => 1, 'subtotal' => 95000]
-            ]
+        ]);
+        $order3->productsRelation()->attach($prd_bf_classic->id, [
+            'qty' => 1,
+            'price' => $prd_bf_classic->price,
+            'subtotal' => $prd_bf_classic->price
+        ]);
+        $order3->productsRelation()->attach($prd_bf_roll->id, [
+            'qty' => 1,
+            'price' => $prd_bf_roll->price,
+            'subtotal' => $prd_bf_roll->price
         ]);
 
         $order4 = Order::create([
@@ -431,9 +450,11 @@ class DatabaseSeeder extends Seeder
             'finish_date' => date('Y-m-d', strtotime($twoDaysAgo . ' + 2 days')),
             'notes' => 'Batal dipesan karena acara mendadak diundur.',
             'total' => 96000,
-            'products' => [
-                ['id' => 21, 'name' => 'Dessert Box Red Velvet Cheese', 'price' => 48000, 'qty' => 2, 'subtotal' => 96000]
-            ]
+        ]);
+        $order4->productsRelation()->attach($prd_red_velvet->id, [
+            'qty' => 2,
+            'price' => $prd_red_velvet->price,
+            'subtotal' => 2 * $prd_red_velvet->price
         ]);
 
         $order5 = Order::create([
@@ -444,10 +465,16 @@ class DatabaseSeeder extends Seeder
             'finish_date' => date('Y-m-d', strtotime($today . ' + 2 days')),
             'notes' => 'Tolong di-packing per kotak rapi untuk oleh-oleh.',
             'total' => 220000,
-            'products' => [
-                ['id' => 22, 'name' => 'Dessert Box Lotus Biscoff', 'price' => 50000, 'qty' => 2, 'subtotal' => 100000],
-                ['id' => 17, 'name' => 'Bolu Chiffon Pandan Santan', 'price' => 60000, 'qty' => 2, 'subtotal' => 120000]
-            ]
+        ]);
+        $order5->productsRelation()->attach($prd_lotus->id, [
+            'qty' => 2,
+            'price' => $prd_lotus->price,
+            'subtotal' => 2 * $prd_lotus->price
+        ]);
+        $order5->productsRelation()->attach($prd_chiffon->id, [
+            'qty' => 2,
+            'price' => $prd_chiffon->price,
+            'subtotal' => 2 * $prd_chiffon->price
         ]);
 
         // 9. Bikin Dummy Riwayat Transaksi (Transactions)
@@ -461,7 +488,6 @@ class DatabaseSeeder extends Seeder
             'total' => 275000,
             'payment_date' => $fiveDaysAgo,
             'notes' => $order3->notes,
-            'products' => $order3->products
         ]);
 
         Transaction::create([
@@ -475,7 +501,6 @@ class DatabaseSeeder extends Seeder
             'payment_date' => $yesterday,
             'dp_nota' => 'DP-001',
             'notes' => $order2->notes,
-            'products' => $order2->products
         ]);
 
         Transaction::create([
@@ -488,7 +513,6 @@ class DatabaseSeeder extends Seeder
             'total' => 220000,
             'payment_date' => $today,
             'notes' => $order5->notes,
-            'products' => $order5->products
         ]);
 
         // 10. Bikin Dummy Riwayat Bahan Baku (Material Histories)
@@ -522,7 +546,8 @@ class DatabaseSeeder extends Seeder
             'type' => 'outbound',
             'qty' => 2.5,
             'notes' => 'Produksi 5 unit kue pesanan',
-            'product_name' => 'Lapis Legit Original'
+            'product_name' => 'Lapis Legit Original',
+            'product_id' => $prd_lapis->id
         ]);
 
         MaterialHistory::create([
@@ -531,7 +556,8 @@ class DatabaseSeeder extends Seeder
             'type' => 'outbound',
             'qty' => 450,
             'notes' => 'Produksi 3 unit brownies coklat lumer',
-            'product_name' => 'Brownies Coklat Lumer'
+            'product_name' => 'Brownies Coklat Lumer',
+            'product_id' => $prd_brownies->id
         ]);
     }
 }

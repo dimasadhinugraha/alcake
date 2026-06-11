@@ -8,6 +8,7 @@ class Order extends Model
     protected $fillable = ['customer', 'phone', 'status', 'order_date', 'finish_date', 'notes', 'total'];
 
     protected $casts = [];
+    protected $appends = ['products'];
 
     public function transaction()
     {

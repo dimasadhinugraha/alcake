@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Recipe extends Model
 {
-    protected $fillable = ['product_name'];
+    protected $fillable = ['product_id'];
 
     // Auto generate formatted recipe ID
     public function getFormattedIdAttribute()
@@ -30,6 +30,12 @@ class Recipe extends Model
     // Relasi ke Product (Kue)
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_name', 'name');
+        return $this->belongsTo(Product::class);
+    }
+
+    // Accessor dinamis untuk mensimulasikan product_name
+    public function getProductNameAttribute()
+    {
+        return $this->product ? $this->product->name : null;
     }
 }

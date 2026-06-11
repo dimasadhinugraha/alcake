@@ -39,10 +39,16 @@ class Product extends Model
         return sprintf('PRD-%04d', $this->id);
     }
 
-    // Relasi ke Resep
+    // Relasi ke Resep (One-to-Many)
     public function recipes()
     {
-        return $this->hasMany(Recipe::class, 'product_name', 'name');
+        return $this->hasMany(Recipe::class);
+    }
+
+    // Relasi ke Resep (One-to-One)
+    public function recipe()
+    {
+        return $this->hasOne(Recipe::class);
     }
 
     // Relasi ke Detail Transaksi

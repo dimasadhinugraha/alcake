@@ -10,8 +10,8 @@ class OrderController extends Controller
 {
     public function index()
     {
-        // Ambil data asli dari database, urutin dari yang terbaru
-        $orders = Order::orderBy('created_at', 'desc')->get();
+        // Ambil data asli dari database, urutin dari yang terbaru dengan eager loading relasi produk
+        $orders = Order::with('productsRelation')->orderBy('created_at', 'desc')->get();
 
         $availableProducts = Product::orderBy('name')
             ->get()
@@ -33,7 +33,7 @@ class OrderController extends Controller
             ];
         })->values();
 
-        $recipes = \App\Models\Recipe::with('ingredients')->get()->map(function($r) {
+        $recipes = \App\Models\Recipe::with(['ingredients', 'product'])->get()->map(function($r) {
             return [
                 'product_name' => $r->product_name,
                 'ingredients' => $r->ingredients->map(function($i) {
@@ -77,7 +77,7 @@ class OrderController extends Controller
         if ($request->status === 'Diproses') {
             // First check if recipe is complete for all products
             foreach ($request->products as $product) {
-                $recipe = \App\Models\Recipe::where('product_name', $product['name'])->first();
+                $recipe = \App\Models\Recipe::where('product_id', $product['id'] ?? null)->first();
                 if (!$recipe) {
                     return redirect()->back()->with('error', 'Resep tidak lengkap untuk semua produk dalam pesanan ini');
                 }
@@ -85,7 +85,7 @@ class OrderController extends Controller
 
             $errors = [];
             foreach ($request->products as $product) {
-                $recipe = \App\Models\Recipe::where('product_name', $product['name'])->first();
+                $recipe = \App\Models\Recipe::where('product_id', $product['id'] ?? null)->first();
                 if ($recipe) {
                     foreach ($recipe->ingredients as $ing) {
                         $needed = $ing->qty * $product['qty'];
@@ -132,7 +132,7 @@ class OrderController extends Controller
         // Deduct stock if created directly in "Diproses"
         if ($order->status === 'Diproses') {
             foreach ($request->products as $product) {
-                $recipe = \App\Models\Recipe::where('product_name', $product['name'])->first();
+                $recipe = \App\Models\Recipe::where('product_id', $product['id'] ?? null)->first();
                 if ($recipe) {
                     foreach ($recipe->ingredients as $ing) {
                         $needed = $ing->qty * $product['qty'];
@@ -147,7 +147,8 @@ class OrderController extends Controller
                                 'type' => 'outbound',
                                 'qty' => $needed,
                                 'notes' => 'Produksi ' . $product['qty'] . ' unit kue pesanan #' . $order->id,
-                                'product_name' => $product['name']
+                                'product_name' => $product['name'],
+                                'product_id' => $product['id'] ?? null
                             ]);
                         }
                     }
@@ -190,7 +191,7 @@ class OrderController extends Controller
         if ($oldStatus !== 'Diproses' && $newStatus === 'Diproses') {
             // First check if recipe is complete for all products
             foreach ($request->products as $product) {
-                $recipe = \App\Models\Recipe::where('product_name', $product['name'])->first();
+                $recipe = \App\Models\Recipe::where('product_id', $product['id'] ?? null)->first();
                 if (!$recipe) {
                     return redirect()->back()->with('error', 'Resep tidak lengkap untuk semua produk dalam pesanan ini');
                 }
@@ -199,7 +200,7 @@ class OrderController extends Controller
             // First check if stock is sufficient
             $errors = [];
             foreach ($request->products as $product) {
-                $recipe = \App\Models\Recipe::where('product_name', $product['name'])->first();
+                $recipe = \App\Models\Recipe::where('product_id', $product['id'] ?? null)->first();
                 if ($recipe) {
                     foreach ($recipe->ingredients as $ing) {
                         $needed = $ing->qty * $product['qty'];
@@ -217,7 +218,7 @@ class OrderController extends Controller
 
             // Deduct stock and record history
             foreach ($request->products as $product) {
-                $recipe = \App\Models\Recipe::where('product_name', $product['name'])->first();
+                $recipe = \App\Models\Recipe::where('product_id', $product['id'] ?? null)->first();
                 if ($recipe) {
                     foreach ($recipe->ingredients as $ing) {
                         $needed = $ing->qty * $product['qty'];
@@ -232,7 +233,8 @@ class OrderController extends Controller
                                 'type' => 'outbound',
                                 'qty' => $needed,
                                 'notes' => 'Produksi ' . $product['qty'] . ' unit kue pesanan #' . $order->id,
-                                'product_name' => $product['name']
+                                'product_name' => $product['name'],
+                                'product_id' => $product['id'] ?? null
                             ]);
                         }
                     }
