@@ -36,6 +36,15 @@
             </div>
             
             <div data-slot="card-content" class="px-6 pb-6">
+                @if(session('success'))
+                <div class="flex items-center gap-2 p-3 mb-6 text-sm text-green-700 border border-green-200 bg-green-50 rounded-xl">
+                    <svg class="w-5 h-5 text-green-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>{{ session('success') }}</span>
+                </div>
+                @endif
+
                 @if($errors->any())
                 <div class="flex items-center gap-2 p-3 mb-6 text-sm text-red-600 border border-red-100 bg-red-50 rounded-xl">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
@@ -52,8 +61,27 @@
                         <input type="text" name="username" class="flex h-10 w-full rounded-md border border-pink-200 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-colors" id="username" placeholder="Masukkan username atau email" required value="{{ old('username') }}">
                     </div>
                     <div class="space-y-2 text-left">
-                        <label data-slot="label" class="flex items-center gap-2 text-sm leading-none font-medium text-gray-700" for="password">Password</label>
-                        <input type="password" name="password" class="flex h-10 w-full rounded-md border border-pink-200 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-colors" id="password" placeholder="Masukkan password" required>
+                        <div class="flex justify-between items-center">
+                            <label data-slot="label" class="flex items-center gap-2 text-sm leading-none font-medium text-gray-700" for="password">Password</label>
+                            <a href="/forgot-password" class="text-xs text-pink-600 hover:text-pink-700 font-semibold transition-colors">Lupa password?</a>
+                        </div>
+                        <div class="relative">
+                            <input type="password" name="password" class="flex h-10 w-full rounded-md border border-pink-200 bg-white pl-3 pr-10 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400 focus:border-transparent transition-colors" id="password" placeholder="Masukkan password" required>
+                            <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-pink-600 focus:outline-none cursor-pointer">
+                                <!-- Eye Icon Open -->
+                                <svg id="eye-icon-open" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                <!-- Eye Icon Closed -->
+                                <svg id="eye-icon-closed" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                                    <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+                                    <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+                                    <line x1="2" x2="22" y1="2" y2="22" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                     
                     <button data-slot="button" class="inline-flex items-center justify-center rounded-md text-sm font-medium text-white h-10 px-4 py-2 w-full bg-pink-500 hover:bg-pink-600 transition-colors mt-2 shadow-sm" type="submit">
@@ -70,5 +98,22 @@
             </div>
         </div>
     </div>
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const openEye = document.getElementById('eye-icon-open');
+            const closedEye = document.getElementById('eye-icon-closed');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                openEye.classList.add('hidden');
+                closedEye.classList.remove('hidden');
+            } else {
+                passwordInput.type = 'password';
+                openEye.classList.remove('hidden');
+                closedEye.classList.add('hidden');
+            }
+        }
+    </script>
 </body>
 </html>

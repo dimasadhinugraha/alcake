@@ -29,6 +29,12 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middl
 Route::post('/login', [AuthController::class, 'login'])->middleware(['guest', 'throttle:5,1']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware(['auth', 'throttle:10,1']);
 
+// Lupa & Reset Password
+Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request')->middleware('guest');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email')->middleware(['guest', 'throttle:5,1']);
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset')->middleware('guest');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update')->middleware('guest');
+
 
 // ==========================================
 // 2. PROTECTED ROUTES (Requires Login)
@@ -43,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // KATALOG MENU KUE (PRODUCTS)
-    Route::prefix('products')->middleware('role:owner,kasir')->group(function () {
+    Route::prefix('products')->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('products.index');
         Route::post('/', [ProductController::class, 'store'])->name('products.store');
         Route::put('/{id}', [ProductController::class, 'update'])->name('products.update');
@@ -52,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // KATEGORI KUE (CATEGORIES)
-    Route::prefix('categories')->middleware('role:owner,kasir')->group(function () {
+    Route::prefix('categories')->group(function () {
         Route::get('/', [\App\Http\Controllers\CategoryController::class, 'index'])->name('categories.index');
         Route::post('/', [\App\Http\Controllers\CategoryController::class, 'store'])->name('categories.store');
         Route::put('/{id}', [\App\Http\Controllers\CategoryController::class, 'update'])->name('categories.update');
@@ -60,7 +66,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // STOK BAHAN BAKU (MATERIALS)
-    Route::prefix('materials')->middleware('role:owner,produksi')->group(function () {
+    Route::prefix('materials')->group(function () {
         Route::get('/', [MaterialController::class, 'index'])->name('materials.index');
         Route::post('/store', [MaterialController::class, 'store'])->name('materials.store');
         Route::post('/update-stock', [MaterialController::class, 'updateStock'])->name('materials.update_stock');
@@ -68,14 +74,14 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // PESANAN PRODUKSI (ORDER MANAGEMENT)
-    Route::prefix('orders')->middleware('role:owner,produksi,kasir')->group(function () {
+    Route::prefix('orders')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('orders.index');
         Route::post('/', [OrderController::class, 'store'])->name('orders.store');
         Route::put('/{id}', [OrderController::class, 'update'])->name('orders.update');
     });
 
     // RESEP MASTER (RECIPES)
-    Route::prefix('recipes')->middleware('role:owner,produksi')->group(function () {
+    Route::prefix('recipes')->group(function () {
         Route::get('/', [RecipeController::class, 'index'])->name('recipes.index');
         Route::post('/', [RecipeController::class, 'store'])->name('recipes.store');
         Route::put('/{id}', [RecipeController::class, 'update'])->name('recipes.update');
@@ -83,17 +89,17 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // TRANSAKSI PEMBAYARAN
-    Route::prefix('transactions')->middleware('role:owner,kasir')->group(function () {
+    Route::prefix('transactions')->group(function () {
         Route::get('/', [TransactionController::class, 'index'])->name('transactions.index');
         Route::post('/', [TransactionController::class, 'store'])->name('transactions.store');
         Route::put('/{id}/settle', [TransactionController::class, 'settle'])->name('transactions.settle');
     });
 
     // LAPORAN OPERASIONAL
-    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index')->middleware('role:owner');
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
     // MANAJEMEN USER (USER MANAGEMENT)
-    Route::prefix('users')->middleware('role:owner')->group(function () {
+    Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('users.index');
         Route::post('/', [UserController::class, 'store'])->name('users.store');
         Route::put('/{id}', [UserController::class, 'update'])->name('users.update');

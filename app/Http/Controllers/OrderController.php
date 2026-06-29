@@ -13,7 +13,9 @@ class OrderController extends Controller
         // Ambil data asli dari database, urutin dari yang terbaru dengan eager loading relasi produk dan transaksi
         $orders = Order::with(['productsRelation', 'transaction'])->orderBy('created_at', 'desc')->get();
 
+        // Hanya tampilkan produk yang sudah punya resep master (bisa diproduksi)
         $availableProducts = Product::orderBy('name')
+            ->whereHas('recipe')
             ->get()
             ->map(function (Product $product) {
                 return [

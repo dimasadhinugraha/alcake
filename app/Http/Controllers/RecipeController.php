@@ -15,8 +15,11 @@ class RecipeController extends Controller
         // 1. Tarik semua resep dari database beserta bahan-bahannya
         $recipes = Recipe::with('ingredients', 'product')->get();
 
-        // 2. Ambil list Produk Kue untuk dropdown dari database products
+        // 2. Ambil list Produk Kue untuk dropdown, kecualikan yang sudah punya resep master
+        $existingProductIds = Recipe::pluck('product_id')->toArray();
+
         $availableProducts = Product::orderBy('name')
+            ->whereNotIn('id', $existingProductIds)
             ->get()
             ->map(function ($p) {
                 return [

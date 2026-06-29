@@ -21,7 +21,6 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
-            'role' => 'required|string|in:owner,produksi,kasir',
         ], [
             'name.required' => 'Nama wajib diisi.',
             'email.required' => 'Email wajib diisi.',
@@ -29,15 +28,13 @@ class UserController extends Controller
             'email.unique' => 'Email sudah terdaftar.',
             'password.required' => 'Password wajib diisi.',
             'password.min' => 'Password minimal harus 6 karakter.',
-            'role.required' => 'Peran (role) wajib dipilih.',
-            'role.in' => 'Peran tidak valid.',
         ]);
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role' => 'admin',
         ]);
 
         return redirect()->route('users.index')->with('success', 'User baru berhasil ditambahkan!');
@@ -51,21 +48,18 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:6',
-            'role' => 'required|string|in:owner,produksi,kasir',
         ], [
             'name.required' => 'Nama wajib diisi.',
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
             'email.unique' => 'Email sudah terdaftar.',
             'password.min' => 'Password baru minimal harus 6 karakter.',
-            'role.required' => 'Peran (role) wajib dipilih.',
-            'role.in' => 'Peran tidak valid.',
         ]);
 
         $updateData = [
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
+            'role' => 'admin',
         ];
 
         if ($request->filled('password')) {

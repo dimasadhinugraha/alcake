@@ -50,7 +50,7 @@
                         <div>
                             <h1 class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-600 to-fuchsia-600 bg-clip-text text-transparent" style="font-family: 'Outfit', sans-serif;">Manajemen User</h1>
                             <p class="text-pink-600 mt-1 flex items-center gap-2 font-medium">
-                                Kelola petugas kasir, bagian produksi dapur, dan pemilik toko
+                                Kelola akun administrator sistem Alva Cake
                             </p>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-gradient-to-br from-pink-400 to-fuchsia-400 rounded-2xl p-6 text-white shadow-xl flex justify-between items-center">
                     <div>
-                        <p class="text-pink-100 text-sm font-medium mb-1">Total Pengguna</p>
+                        <p class="text-pink-100 text-sm font-medium mb-1">Total Admin</p>
                         <p class="text-4xl font-bold font-outfit">{{ count($users) }}</p>
                     </div>
                     <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center">
@@ -74,8 +74,8 @@
                 </div>
                 <div class="bg-gradient-to-br from-purple-400 to-indigo-400 rounded-2xl p-6 text-white shadow-xl flex justify-between items-center">
                     <div>
-                        <p class="text-purple-100 text-sm font-medium mb-1">Admin / Owner</p>
-                        <p class="text-4xl font-bold font-outfit">{{ $users->where('role', 'owner')->count() }}</p>
+                        <p class="text-purple-100 text-sm font-medium mb-1">Aktif Saat Ini</p>
+                        <p class="text-lg font-bold font-outfit truncate" style="max-width: 180px;">{{ auth()->user()->name }}</p>
                     </div>
                     <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-8 h-8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
@@ -83,8 +83,8 @@
                 </div>
                 <div class="bg-gradient-to-br from-amber-400 to-orange-400 rounded-2xl p-6 text-white shadow-xl flex justify-between items-center">
                     <div>
-                        <p class="text-amber-100 text-sm font-medium mb-1">Staff (Kasir & Produksi)</p>
-                        <p class="text-4xl font-bold font-outfit">{{ $users->whereIn('role', ['kasir', 'produksi'])->count() }}</p>
+                        <p class="text-amber-100 text-sm font-medium mb-1">Akses Sistem</p>
+                        <p class="text-2xl font-bold font-outfit">Akses Penuh</p>
                     </div>
                     <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-8 h-8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
@@ -96,7 +96,7 @@
             <div class="bg-white border-2 border-pink-100 rounded-3xl shadow-xl overflow-hidden">
                 <div class="px-6 py-5 bg-gradient-to-r from-pink-50/50 to-rose-50/50 border-b border-pink-100 flex items-center justify-between">
                     <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-                        📋 Daftar Petugas & Akun Pengguna
+                        📋 Daftar Admin & Akun Pengguna
                     </h2>
                 </div>
                 <div class="overflow-x-auto">
@@ -105,7 +105,7 @@
                             <tr class="bg-slate-50 border-b border-slate-100 text-slate-500 text-xs tracking-wider font-bold">
                                 <th class="px-6 py-4">NAMA LENGKAP</th>
                                 <th class="px-6 py-4">EMAIL</th>
-                                <th class="px-6 py-4">ROLE PERAN</th>
+                                <th class="px-6 py-4">PERAN</th>
                                 <th class="px-6 py-4">TANGGAL DAFTAR</th>
                                 <th class="px-6 py-4 text-right">AKSI</th>
                             </tr>
@@ -121,13 +121,7 @@
                                 </td>
                                 <td class="px-6 py-4 font-mono text-xs text-slate-600">{{ $user->email }}</td>
                                 <td class="px-6 py-4">
-                                    @if($user->role === 'owner')
-                                        <span class="inline-flex items-center justify-center rounded-md border px-2.5 py-0.5 text-xs font-bold bg-purple-100 text-purple-700 border-purple-300">Owner (Full Admin)</span>
-                                    @elseif($user->role === 'produksi')
-                                        <span class="inline-flex items-center justify-center rounded-md border px-2.5 py-0.5 text-xs font-bold bg-blue-100 text-blue-700 border-blue-300">Produksi (Dapur)</span>
-                                    @else
-                                        <span class="inline-flex items-center justify-center rounded-md border px-2.5 py-0.5 text-xs font-bold bg-green-100 text-green-700 border-green-300">Kasir (POS)</span>
-                                    @endif
+                                    <span class="inline-flex items-center justify-center rounded-md border px-2.5 py-0.5 text-xs font-bold bg-pink-100 text-pink-700 border-pink-300">Admin</span>
                                 </td>
                                 <td class="px-6 py-4 text-xs text-slate-500">{{ $user->created_at ? $user->created_at->translatedFormat('d M Y, H:i') : '-' }}</td>
                                 <td class="px-6 py-4 text-right">
@@ -177,7 +171,7 @@
             <h2 class="text-2xl font-extrabold text-pink-900 flex items-center gap-2 font-outfit">
                 👤 Tambah User Baru
             </h2>
-            <p class="text-xs text-pink-600 font-medium">Buat akun petugas baru untuk sistem Alva Cake</p>
+            <p class="text-xs text-pink-600 font-medium">Buat akun admin baru untuk sistem Alva Cake</p>
         </div>
         <form action="{{ route('users.store') }}" method="POST" class="flex-1 overflow-y-auto p-6 space-y-4">
             @csrf
@@ -195,15 +189,6 @@
             <div class="space-y-2">
                 <label class="text-sm font-bold text-slate-700" for="add_password">Password Awal *</label>
                 <input type="password" name="password" id="add_password" required class="w-full border-2 border-pink-100 bg-white rounded-2xl h-12 px-4 focus:outline-none focus:border-pink-400 font-semibold text-slate-700 transition" placeholder="Minimal 6 karakter">
-            </div>
-
-            <div class="space-y-2">
-                <label class="text-sm font-bold text-slate-700" for="add_role">Role Peran *</label>
-                <select name="role" id="add_role" required class="w-full border-2 border-pink-100 bg-white rounded-2xl h-12 px-4 focus:outline-none focus:border-pink-400 font-semibold text-slate-700 transition">
-                    <option value="kasir">Kasir (Petugas POS)</option>
-                    <option value="produksi">Produksi (Petugas Dapur)</option>
-                    <option value="owner">Owner (Akses Penuh)</option>
-                </select>
             </div>
 
             <div class="pt-4 border-t border-slate-100 flex gap-3">
@@ -251,15 +236,6 @@
                 <input type="password" name="password" id="edit_password" class="w-full border-2 border-pink-100 bg-white rounded-2xl h-12 px-4 focus:outline-none focus:border-pink-400 font-semibold text-slate-700 transition" placeholder="Kosongkan jika tidak diganti">
             </div>
 
-            <div class="space-y-2">
-                <label class="text-sm font-bold text-slate-700" for="edit_role">Role Peran *</label>
-                <select name="role" id="edit_role" required class="w-full border-2 border-pink-100 bg-white rounded-2xl h-12 px-4 focus:outline-none focus:border-pink-400 font-semibold text-slate-700 transition">
-                    <option value="kasir">Kasir (Petugas POS)</option>
-                    <option value="produksi">Produksi (Petugas Dapur)</option>
-                    <option value="owner">Owner (Akses Penuh)</option>
-                </select>
-            </div>
-
             <div class="pt-4 border-t border-slate-100 flex gap-3">
                 <button type="button" onclick="closeEditModal()" class="flex-1 inline-flex items-center justify-center border-2 border-slate-200 text-slate-500 hover:bg-slate-50 px-4 py-2 rounded-2xl h-12 font-bold cursor-pointer transition">
                     Batal
@@ -294,7 +270,6 @@
         document.getElementById('editForm').action = '/users/' + user.id;
         document.getElementById('edit_name').value = user.name;
         document.getElementById('edit_email').value = user.email;
-        document.getElementById('edit_role').value = user.role;
         document.getElementById('edit_password').value = '';
     }
     function closeEditModal() {
