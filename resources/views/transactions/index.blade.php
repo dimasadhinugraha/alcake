@@ -163,7 +163,7 @@
                 <div class="space-y-1">
                     <h2 class="text-2xl font-black tracking-wider text-pink-600 font-outfit">ALCAKE</h2>
                     <p class="text-[10px] text-slate-600 font-bold">PREMIUM BAKERY & CUSTOM CAKE</p>
-                    <p class="text-[9px] text-slate-500 leading-tight">Jl. Rinjani No. 12, Malang<br>Telp: 0812-3456-7890</p>
+                    <p class="text-[9px] text-slate-500 leading-tight">Jl. Pedongkelan Belakang RT 03 RW 14 No. 121,<br>Cengkareng Timur, Jakarta Barat<br>WhatsApp: 085280024001</p>
                 </div>
                 
                 <!-- Center: Doc Title -->
@@ -237,7 +237,7 @@
             </div>
 
             <!-- Bottom Section: Summary, Notes, Signature -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-dashed border-slate-300">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-dashed border-slate-300 max-w-2xl mx-auto w-full">
                 <!-- Left: Summary Details -->
                 <div class="text-[11px] space-y-1.5 text-slate-700 bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <div class="flex justify-between">
@@ -270,17 +270,7 @@
                     </ul>
                 </div>
 
-                <!-- Right: Signature -->
-                <div class="text-center flex flex-col justify-between h-full pt-2">
-                    <div>
-                        <p id="rcpt_signature_date" class="text-xs text-slate-700 font-bold mb-1"></p>
-                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Hormat Kami,</p>
-                    </div>
-                    <div class="mt-8">
-                        <div class="w-40 mx-auto border-b border-slate-800"></div>
-                        <p class="text-[10px] font-bold text-slate-700 mt-1 uppercase tracking-wider">Admin Alva Cake</p>
-                    </div>
-                </div>
+
             </div>
 
             <!-- Print Hide Buttons Section -->
