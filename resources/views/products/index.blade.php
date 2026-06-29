@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="flex-1 overflow-auto relative z-10">
-    <div class="max-w-7xl mx-auto px-8 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-6">
         <div class="space-y-8">
             
             <!-- Flash Message -->
@@ -19,19 +19,19 @@
             <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-rose-100 via-pink-100 to-fuchsia-50 p-8 shadow-xl border border-rose-200/50">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-pink-200/30 rounded-full blur-3xl"></div>
                 <div class="absolute bottom-0 left-0 w-48 h-48 bg-fuchsia-200/30 rounded-full blur-3xl"></div>
-                <div class="relative flex items-center justify-between">
+                <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                     <div class="flex items-center gap-4">
                         <div class="w-16 h-16 bg-gradient-to-br from-pink-400 to-fuchsia-400 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cake w-8 h-8 text-white"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"></path><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"></path><path d="M2 21h20"></path><path d="M7 8v3"></path><path d="M12 8v3"></path><path d="M17 8v3"></path><path d="M7 4h.01"></path><path d="M12 4h.01"></path><path d="M17 4h.01"></path></svg>
                         </div>
                         <div>
-                            <h1 class="text-4xl font-bold bg-gradient-to-r from-pink-600 to-fuchsia-600 bg-clip-text text-transparent">Katalog Menu Kue</h1>
+                            <h1 class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-600 to-fuchsia-600 bg-clip-text text-transparent">Katalog Menu Kue</h1>
                             <p class="text-pink-600 mt-1 flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles w-4 h-4"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>Sistem Pre-Order - Pesan Terlebih Dahulu
                             </p>
                         </div>
                     </div>
-                    <button onclick="openAddModal()" data-slot="dialog-trigger" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-primary/90 h-9 has-[&gt;svg]:px-3 bg-gradient-to-r from-pink-400 to-fuchsia-400 hover:from-pink-500 hover:to-fuchsia-500 text-white shadow-2xl rounded-2xl px-6 py-6 transform hover:scale-105 transition-all" type="button">
+                    <button onclick="openAddModal()" data-slot="dialog-trigger" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-primary/90 h-9 has-[&gt;svg]:px-3 bg-gradient-to-r from-pink-400 to-fuchsia-400 hover:from-pink-500 hover:to-fuchsia-500 text-white shadow-2xl rounded-2xl px-6 py-6 transform hover:scale-105 transition-all w-full md:w-auto" type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus w-5 h-5 mr-2"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
                         <span class="font-semibold">Tambah Menu</span>
                     </button>
@@ -180,7 +180,7 @@
 
 <!-- Modal Tambah -->
 <div id="addModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 animate-fade-in">
-    <div onclick="closeAddModal()" class="fixed inset-0 bg-black/50 transition-opacity z-0" aria-hidden="true"></div>
+    <div onclick="closeAddModal()" class="fixed inset-0 bg-black/40 backdrop-blur-md transition-opacity z-0" aria-hidden="true"></div>
     <div class="relative w-full max-w-[600px] bg-white rounded-3xl border-4 border-pink-100 shadow-2xl p-6 mx-auto sm:my-8 max-h-[90vh] flex flex-col z-10 animate-scale-up">
         <div class="flex flex-col gap-2 text-center sm:text-left">
             <div class="flex items-center gap-3 pb-2">
@@ -249,7 +249,7 @@
 
 <!-- Modal Edit -->
 <div id="editModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 animate-fade-in">
-    <div onclick="closeEditModal()" class="fixed inset-0 bg-black/50 transition-opacity z-0" aria-hidden="true"></div>
+    <div onclick="closeEditModal()" class="fixed inset-0 bg-black/40 backdrop-blur-md transition-opacity z-0" aria-hidden="true"></div>
     <div class="relative w-full max-w-[600px] bg-white rounded-3xl border-4 border-purple-100 shadow-2xl p-6 mx-auto sm:my-8 max-h-[90vh] flex flex-col z-10 animate-scale-up">
         <div class="flex flex-col gap-2 text-center sm:text-left">
             <div class="flex items-center gap-3 pb-2">

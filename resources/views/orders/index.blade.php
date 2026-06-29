@@ -3,29 +3,29 @@
 @section('title', 'Produksi Pesanan - Alva Cake')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-8 py-6">
+<div class="max-w-7xl mx-auto px-4 sm:px-8 py-6">
     <div class="space-y-8" style="font-family: &quot;DM Sans&quot;, sans-serif;">
         <!-- Header Banner -->
-        <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-400 p-10 shadow-2xl animate-fade-in">
+        <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-400 p-8 sm:p-10 shadow-2xl animate-fade-in">
             <div class="absolute inset-0">
                 <div class="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl" style="transform: scale(1.09641) rotate(43.3853deg);"></div>
             </div>
-            <div class="relative flex items-center justify-between flex-wrap gap-6">
-                <div class="flex items-center gap-6">
-                    <div class="w-20 h-20 bg-white/20 backdrop-blur-xl rounded-[1.2rem] flex items-center justify-center shadow-2xl border border-white/30">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package w-10 h-10 text-white"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
+            <div class="relative flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-xl rounded-[1.2rem] flex items-center justify-center shadow-2xl border border-white/30 shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package w-8 h-8 sm:w-10 sm:h-10 text-white"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
                     </div>
                     <div>
-                        <h1 class="text-5xl font-extrabold text-white drop-shadow-lg mb-2 animate-pulse-subtle" style="font-family: Outfit, sans-serif;">Produksi Pesanan</h1>
-                        <p class="text-white/90 text-lg font-medium flex items-center gap-2">
+                        <h1 class="text-3xl sm:text-5xl font-extrabold text-white drop-shadow-lg mb-2 animate-pulse-subtle" style="font-family: Outfit, sans-serif;">Produksi Pesanan</h1>
+                        <p class="text-white/90 text-sm sm:text-lg font-medium flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chef-hat w-5 h-5"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"></path><path d="M6 17h12"></path></svg>
                             Kelola Pesanan Pelanggan &amp; Jadwal Produksi
                         </p>
                     </div>
                 </div>
-                <button onclick="openCreateModal()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all bg-white/20 backdrop-blur-xl hover:bg-white/30 text-white border border-white/30 shadow-2xl rounded-2xl px-8 py-6 transform hover:scale-105 cursor-pointer" type="button">
+                <button onclick="openCreateModal()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all bg-white/20 backdrop-blur-xl hover:bg-white/30 text-white border border-white/30 shadow-2xl rounded-2xl px-6 py-4 sm:px-8 sm:py-6 transform hover:scale-105 cursor-pointer w-full lg:w-auto" type="button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus w-6 h-6 mr-2"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
-                    <span class="font-bold text-lg">Buat Pesanan Baru</span>
+                    <span class="font-bold text-base sm:text-lg">Buat Pesanan Baru</span>
                 </button>
             </div>
         </div>
@@ -284,18 +284,36 @@
                                     <!-- Actions -->
                                     <td class="py-4 px-4 text-right whitespace-nowrap">
                                         @if($order->status === 'Pending')
-                                            <button type="button" onclick='openProductionConfirmModal(@json($order))' class="inline-flex items-center justify-center whitespace-nowrap text-xs font-bold transition-all h-8 gap-1.5 px-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-xl shadow-sm hover:shadow cursor-pointer">
-                                                Mulai Produksi
-                                            </button>
+                                            <div class="flex gap-2 justify-end">
+                                                <button type="button" onclick='openProductionConfirmModal(@json($order))' class="inline-flex items-center justify-center whitespace-nowrap text-xs font-bold transition-all h-8 gap-1.5 px-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-xl shadow-sm hover:shadow cursor-pointer">
+                                                    Mulai Produksi
+                                                </button>
+                                                <button type="button" onclick='openReceiptModalForOrder(@json($order), @json($order->transaction))' class="inline-flex items-center justify-center whitespace-nowrap text-xs font-bold transition-all h-8 gap-1.5 px-3 border-2 border-emerald-300 text-emerald-700 bg-white hover:bg-emerald-50 rounded-xl cursor-pointer" title="Cetak Invoice">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer w-4 h-4"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"></path><rect x="6" y="14" width="12" height="8" rx="1"></rect></svg>
+                                                    Cetak
+                                                </button>
+                                            </div>
                                         @elseif($order->status === 'Diproses')
-                                            <button type="button" onclick='openCompleteConfirmModal(@json($order))' class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-primary/90 h-8 gap-1.5 px-3 has-[>svg]:px-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-xl w-full cursor-pointer">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-4 h-4 mr-1"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
-                                                Selesai
-                                            </button>
+                                            <div class="flex gap-2 justify-end">
+                                                <button type="button" onclick='openCompleteConfirmModal(@json($order))' class="inline-flex items-center justify-center whitespace-nowrap text-xs font-bold transition-all h-8 gap-1.5 px-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-xl cursor-pointer">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-4 h-4 mr-1"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
+                                                    Selesai
+                                                </button>
+                                                <button type="button" onclick='openReceiptModalForOrder(@json($order), @json($order->transaction))' class="inline-flex items-center justify-center whitespace-nowrap text-xs font-bold transition-all h-8 gap-1.5 px-3 border-2 border-emerald-300 text-emerald-700 bg-white hover:bg-emerald-50 rounded-xl cursor-pointer" title="Cetak Invoice/Kwitansi">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer w-4 h-4"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"></path><rect x="6" y="14" width="12" height="8" rx="1"></rect></svg>
+                                                    Cetak
+                                                </button>
+                                            </div>
                                         @else
-                                            <span class="inline-flex items-center justify-center rounded-lg border px-2.5 py-1 text-xs font-bold bg-slate-50 text-slate-400 border-slate-200">
-                                                Selesai Diproduksi
-                                            </span>
+                                            <div class="flex gap-2 justify-end items-center">
+                                                <span class="inline-flex items-center justify-center rounded-lg border px-2.5 py-1 text-xs font-bold bg-slate-50 text-slate-400 border-slate-200">
+                                                    Selesai Diproduksi
+                                                </span>
+                                                <button type="button" onclick='openReceiptModalForOrder(@json($order), @json($order->transaction))' class="inline-flex items-center justify-center whitespace-nowrap text-xs font-bold transition-all h-8 gap-1.5 px-3 border-2 border-emerald-300 text-emerald-700 bg-white hover:bg-emerald-50 rounded-xl cursor-pointer" title="Cetak Kwitansi">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer w-4 h-4"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"></path><rect x="6" y="14" width="12" height="8" rx="1"></rect></svg>
+                                                    Cetak
+                                                </button>
+                                            </div>
                                         @endif
                                     </td>
                                 </tr>
@@ -313,7 +331,7 @@
 </div>
 
 <!-- Modal Detail Pesanan -->
-<div id="detailModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 py-10 transition-all duration-300 animate-fade-in">
+<div id="detailModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 backdrop-blur-md py-10 transition-all duration-300 animate-fade-in !mt-0">
     <div class="bg-white rounded-[2rem] w-full max-w-lg mx-4 overflow-hidden shadow-2xl border-4 border-blue-100 flex flex-col relative max-h-[90vh] animate-scale-up">
         <div class="px-8 pt-8 pb-4 shrink-0 flex justify-between items-center bg-gradient-to-r from-blue-50 to-indigo-50 border-b-2 border-blue-100">
             <div class="flex items-center gap-3">
@@ -370,7 +388,7 @@
 </div>
 
 <!-- Modal Konfirmasi Mulai Produksi (Sufficient Stock / Recipe Check Modal) -->
-<div id="productionConfirmModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 py-10 transition-all duration-300 animate-fade-in">
+<div id="productionConfirmModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 backdrop-blur-md py-10 transition-all duration-300 animate-fade-in !mt-0">
     <div class="bg-white rounded-[2rem] w-full max-w-[700px] mx-4 overflow-hidden shadow-2xl border-4 border-orange-200 flex flex-col relative max-h-[90vh] animate-scale-up">
         <!-- Close button top-right -->
         <button type="button" onclick="closeProductionConfirmModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full border border-gray-200 text-gray-400 hover:text-red-500 hover:bg-red-50 transition cursor-pointer flex items-center justify-center">
@@ -460,7 +478,7 @@
 </div>
 
 <!-- Modal Konfirmasi Pesanan Selesai -->
-<div id="completeConfirmModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 py-10 transition-all duration-300 animate-fade-in">
+<div id="completeConfirmModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 backdrop-blur-md py-10 transition-all duration-300 animate-fade-in !mt-0">
     <div class="bg-white rounded-[2rem] w-full max-w-[550px] mx-4 overflow-hidden shadow-2xl border-4 border-blue-200 flex flex-col relative max-h-[90vh] animate-scale-up">
         <!-- Close button top-right -->
         <button type="button" onclick="closeCompleteConfirmModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full border border-gray-200 text-gray-400 hover:text-red-500 hover:bg-red-50 transition cursor-pointer flex items-center justify-center">
@@ -528,8 +546,159 @@
     </div>
 </div>
 
+<!-- Modal: Nota Pembayaran -->
+<div id="receiptModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md animate-fade-in !mt-0">
+    <div id="receiptModalContent" class="relative w-full max-w-3xl bg-white p-8 rounded-3xl border-4 border-slate-300 shadow-2xl max-h-[90vh] overflow-y-auto" style="font-family: 'Courier New', Courier, monospace; color: #1e293b;">
+        <!-- Top Row: Logo/Address, Title, Metadata -->
+        <div class="flex justify-between items-start border-b-2 border-slate-800 pb-4 mb-4">
+            <!-- Left: Company Info -->
+            <div class="space-y-1">
+                <h2 class="text-2xl font-black tracking-wider text-pink-600 font-outfit">ALCAKE</h2>
+                <p class="text-[10px] text-slate-600 font-bold">PREMIUM BAKERY & CUSTOM CAKE</p>
+                <p class="text-[9px] text-slate-500 leading-tight">Jl. Rinjani No. 12, Malang<br>Telp: 0812-3456-7890</p>
+            </div>
+            
+            <!-- Center: Doc Title -->
+            <div class="text-center self-center px-4">
+                <h1 id="receipt_doc_title" class="text-2xl font-black tracking-widest text-slate-900 font-outfit uppercase">KWITANSI PEMBAYARAN</h1>
+                <div id="receipt_badge" class="hidden"></div>
+            </div>
+
+            <!-- Right: Metadata Info -->
+            <div class="text-right text-[11px] space-y-1 text-slate-700">
+                <div class="flex justify-end gap-2">
+                    <span class="text-slate-500">Tgl Transaksi:</span>
+                    <span id="rcpt_date" class="font-bold text-slate-900"></span>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <span class="text-slate-500">No. Nota:</span>
+                    <span id="rcpt_id" class="font-mono font-bold text-slate-900"></span>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <span class="text-slate-500">Pelanggan:</span>
+                    <span id="rcpt_customer" class="font-bold text-slate-900"></span>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <span class="text-slate-500">Admin/Kasir:</span>
+                    <span id="rcpt_admin" class="font-bold text-slate-900"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle Section: Telah terima dari, Sejumlah uang, Terbilang -->
+        <div id="rcpt_middle_section" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 text-sm border-b border-dashed border-slate-300 pb-4">
+            <div class="space-y-2">
+                <div class="flex items-center gap-2">
+                    <span class="text-slate-500 w-32 shrink-0">Telah terima dari :</span>
+                    <span id="rcpt_received_from" class="font-bold text-slate-800 border-b border-dotted border-slate-400 flex-1"></span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-slate-500 w-32 shrink-0">Sejumlah uang   :</span>
+                    <span id="rcpt_amount_numeric" class="font-extrabold text-slate-950 border-b border-dotted border-slate-400 flex-1 text-lg"></span>
+                </div>
+            </div>
+            <!-- Right: Terbilang Box -->
+            <div class="flex items-center justify-center border-2 border-dashed border-slate-400 bg-slate-50 rounded-xl p-4">
+                <span class="text-xs text-slate-400 uppercase tracking-wider font-bold mr-2">Terbilang:</span>
+                <span id="rcpt_amount_words" class="italic font-bold text-slate-800 text-center leading-relaxed"></span>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="mb-6">
+            <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                    <tr class="border-t-2 border-b-2 border-slate-800 font-extrabold text-slate-900">
+                        <th class="py-2 w-12 text-center">NO</th>
+                        <th class="py-2">KETERANGAN / NAMA KUE</th>
+                        <th class="py-2 text-right pr-4">HARGA SATUAN</th>
+                        <th class="py-2 text-center w-20">QTY</th>
+                        <th class="py-2 text-right w-32">JUMLAH</th>
+                    </tr>
+                </thead>
+                <tbody id="rcpt_table_body" class="divide-y divide-slate-100">
+                    <!-- Products injected here -->
+                </tbody>
+                <tfoot>
+                    <tr class="border-t-2 border-slate-800 font-extrabold text-sm text-slate-900">
+                        <td colspan="4" class="py-3 text-right pr-4">TOTAL :</td>
+                        <td id="rcpt_total_amount" class="py-3 text-right"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <!-- Bottom Section: Summary, Notes, Signature -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-dashed border-slate-300">
+            <!-- Left: Summary Details -->
+            <div class="text-[11px] space-y-1.5 text-slate-700 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <div class="flex justify-between">
+                    <span>Total Belanja:</span>
+                    <span id="rcpt_summary_total" class="font-bold"></span>
+                </div>
+                <div class="flex justify-between text-green-700">
+                    <span id="rcpt_summary_paid_label">Jumlah Dibayar:</span>
+                    <span id="rcpt_summary_paid" class="font-bold"></span>
+                </div>
+                <div id="rcpt_summary_remaining_row" class="flex justify-between text-red-600 border-t border-slate-200 pt-1.5 mt-1">
+                    <span>Sisa Tagihan:</span>
+                    <span id="rcpt_summary_remaining" class="font-bold"></span>
+                </div>
+                <div class="flex justify-between pt-1 border-t border-slate-200">
+                    <span>Status:</span>
+                    <span id="rcpt_summary_status" class="font-extrabold uppercase text-indigo-700"></span>
+                </div>
+            </div>
+
+            <!-- Center: Attention/Warning Box -->
+            <div class="text-[10px] text-slate-600 p-4 rounded-xl border border-amber-200 bg-amber-50/50">
+                <p class="font-bold text-amber-800 mb-1 flex items-center gap-1">
+                    ⚠️ Perhatian:
+                </p>
+                <ul class="list-disc list-inside space-y-1 leading-relaxed">
+                    <li>Simpan dokumen ini sebagai bukti transaksi sah.</li>
+                    <li>Pesanan yang sudah diproses tidak dapat dibatalkan secara sepihak.</li>
+                    <li>Untuk pesanan DP, pelunasan wajib diselesaikan saat pengambilan kue.</li>
+                </ul>
+            </div>
+
+            <!-- Right: Signature -->
+            <div class="text-center flex flex-col justify-between h-full pt-2">
+                <div>
+                    <p id="rcpt_signature_date" class="text-xs text-slate-700 font-bold mb-1"></p>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Hormat Kami,</p>
+                </div>
+                <div class="mt-8">
+                    <div class="w-40 mx-auto border-b border-slate-800"></div>
+                    <p class="text-[10px] font-bold text-slate-700 mt-1 uppercase tracking-wider">Admin Alva Cake</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Print Hide Buttons Section -->
+        <div class="print-hide flex gap-3 mt-8 border-t border-slate-200 pt-4">
+            <button onclick="printReceipt()" class="flex-1 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm border-2 border-emerald-300 text-emerald-700 hover:bg-emerald-50 px-4 py-2 rounded-2xl h-12 font-bold cursor-pointer transition">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"></path><rect x="6" y="14" width="12" height="8" rx="1"></rect></svg>
+                Cetak Nota
+            </button>
+            <button onclick="downloadReceiptPDF()" class="flex-1 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 px-4 py-2 rounded-2xl h-12 font-bold cursor-pointer transition shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
+                Download PDF
+            </button>
+        </div>
+        
+        <button type="button" onclick="closeReceiptModal()" class="print-hide ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x">
+                <path d="M18 6 6 18"></path>
+                <path d="m6 6 12 12"></path>
+            </svg>
+            <span class="sr-only">Close</span>
+        </button>
+    </div>
+</div>
+
 <!-- Modal Buat Pesanan Baru -->
-<div id="createModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 py-10 transition-all duration-300 animate-fade-in">
+<div id="createModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 backdrop-blur-md py-10 transition-all duration-300 animate-fade-in !mt-0">
     <div class="bg-white rounded-[2rem] w-full max-w-[700px] mx-4 overflow-hidden shadow-2xl border-2 border-blue-200/50 flex flex-col relative max-h-[90vh] animate-scale-up">
         <!-- Close Button top-right -->
         <button type="button" onclick="closeCreateModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full border border-gray-200 text-gray-400 hover:text-red-500 hover:bg-red-50 transition cursor-pointer flex items-center justify-center">
@@ -664,7 +833,7 @@
 </div>
 
 <!-- Modal Edit Pesanan -->
-<div id="editModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 py-10 transition-all duration-300 animate-fade-in">
+<div id="editModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 backdrop-blur-md py-10 transition-all duration-300 animate-fade-in !mt-0">
     <div class="bg-white rounded-[2rem] w-full max-w-[700px] mx-4 overflow-hidden shadow-2xl border-2 border-blue-200/50 flex flex-col relative max-h-[90vh] animate-scale-up">
         <!-- Close Button top-right -->
         <button type="button" onclick="closeEditModal()" class="absolute top-6 right-6 w-8 h-8 rounded-full border border-gray-200 text-gray-400 hover:text-red-500 hover:bg-red-50 transition cursor-pointer flex items-center justify-center">
@@ -1467,6 +1636,213 @@
         filterOrders();
     });
 
+    function terbilang(nilai) {
+        nilai = Math.floor(Math.abs(nilai));
+        const huruf = ["", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas"];
+        let temp = "";
+        
+        if (nilai < 12) {
+            temp = " " + huruf[nilai];
+        } else if (nilai < 20) {
+            temp = terbilang(nilai - 10) + " belas";
+        } else if (nilai < 100) {
+            temp = terbilang(nilai / 10) + " puluh" + terbilang(nilai % 10);
+        } else if (nilai < 200) {
+            temp = " seratus" + terbilang(nilai - 100);
+        } else if (nilai < 1000) {
+            temp = terbilang(nilai / 100) + " ratus" + terbilang(nilai % 100);
+        } else if (nilai < 2000) {
+            temp = " seribu" + terbilang(nilai - 1000);
+        } else if (nilai < 1000000) {
+            temp = terbilang(nilai / 1000) + " ribu" + terbilang(nilai % 1000);
+        } else if (nilai < 1000000000) {
+            temp = terbilang(nilai / 1000000) + " juta" + terbilang(nilai % 1000000);
+        } else if (nilai < 1000000000000) {
+            temp = terbilang(nilai / 1000000000) + " milyar" + terbilang(nilai % 1000000000);
+        } else if (nilai < 1000000000000000) {
+            temp = terbilang(nilai / 1000000000000) + " trilyun" + terbilang(nilai % 1000000000000);
+        }
+        
+        return temp.trim();
+    }
+
+    function formatTerbilang(nilai) {
+        if (nilai === 0) return "Nol rupiah";
+        let hasil = terbilang(nilai);
+        hasil = hasil.charAt(0).toUpperCase() + hasil.slice(1) + " rupiah";
+        return hasil;
+    }
+
+    function formatRp(value) {
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value);
+    }
+
+    function openReceiptModalForOrder(order, transaction) {
+        // Synthesis a transaction object for openReceiptModal
+        const trx = {
+            id: order.id,
+            customer: order.customer,
+            admin: (transaction && transaction.admin) ? transaction.admin : 'Admin Alva Cake',
+            payment_date: (transaction && transaction.payment_date) ? transaction.payment_date : order.order_date,
+            created_at: order.created_at,
+            total: order.total,
+            status: (transaction && transaction.status) ? transaction.status : 'Belum Bayar',
+            type: (transaction && transaction.type) ? transaction.type : 'Belum Bayar',
+            paid: (transaction && transaction.paid) ? transaction.paid : 0,
+            notes: order.notes,
+            products: order.products,
+            dp_nota: (transaction && transaction.dp_nota) ? transaction.dp_nota : null,
+        };
+        openReceiptModal(trx);
+    }
+
+    function openReceiptModal(trx) {
+        if (typeof trx === 'string') {
+            trx = JSON.parse(trx);
+        }
+        document.getElementById('receiptModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        const mainEl = document.querySelector('main');
+        if (mainEl) mainEl.style.overflow = 'hidden';
+
+        document.getElementById('rcpt_id').innerText = '#' + trx.id;
+        
+        // Format payment_date
+        let dateObj = new Date(trx.payment_date || trx.created_at);
+        let options = { day: '2-digit', month: 'long', year: 'numeric' };
+        let formattedDate = dateObj.toLocaleDateString('id-ID', options);
+        document.getElementById('rcpt_date').innerText = formattedDate;
+        
+        document.getElementById('rcpt_customer').innerText = trx.customer;
+        document.getElementById('rcpt_received_from').innerText = trx.customer;
+        document.getElementById('rcpt_admin').innerText = trx.admin || 'Admin Alcake';
+        document.getElementById('rcpt_signature_date').innerText = 'Malang, ' + formattedDate;
+
+        // Dynamic Document Title
+        const docTitle = document.getElementById('receipt_doc_title');
+        const badge = document.getElementById('receipt_badge');
+        const middleSection = document.getElementById('rcpt_middle_section');
+        if (docTitle) {
+            docTitle.innerText = trx.status === 'Lunas' ? 'KWITANSI PEMBAYARAN' : 'NOTA PENJUALAN';
+            if (badge) badge.innerText = trx.status === 'Lunas' ? 'Kwitansi' : 'Nota';
+        }
+        if (middleSection) {
+            if (trx.status === 'Lunas') {
+                middleSection.classList.remove('hidden');
+            } else {
+                middleSection.classList.add('hidden');
+            }
+        }
+
+        // Numeric and Words amount representation
+        document.getElementById('rcpt_amount_numeric').innerText = formatRp(trx.paid);
+        document.getElementById('rcpt_amount_words').innerText = formatTerbilang(trx.paid);
+
+        // Products details list in Table
+        let productsHtml = '';
+        let productsArr = [];
+        if (trx.products) {
+            productsArr = typeof trx.products === 'string' ? JSON.parse(trx.products) : trx.products;
+        }
+        
+        if (Array.isArray(productsArr) && productsArr.length > 0) {
+            productsArr.forEach((p, idx) => {
+                let subtotal = Number(p.subtotal || (p.price * p.qty));
+                productsHtml += `
+                <tr class="text-slate-800">
+                    <td class="py-2.5 text-center">${idx + 1}</td>
+                    <td class="py-2.5 font-bold">${p.name}</td>
+                    <td class="py-2.5 text-right pr-4">${formatRp(p.price)}</td>
+                    <td class="py-2.5 text-center font-bold">${p.qty} Pcs</td>
+                    <td class="py-2.5 text-right font-bold">${formatRp(subtotal)}</td>
+                </tr>`;
+            });
+        } else {
+            productsHtml = '<tr><td colspan="5" class="py-4 text-center text-slate-500 italic">Rincian produk tidak tersedia.</td></tr>';
+        }
+        
+        document.getElementById('rcpt_table_body').innerHTML = productsHtml;
+        document.getElementById('rcpt_total_amount').innerText = formatRp(trx.total);
+
+        // Bottom Left: Summary Card info
+        document.getElementById('rcpt_summary_total').innerText = formatRp(trx.total);
+        
+        const summaryPaidLabel = document.getElementById('rcpt_summary_paid_label');
+        if (summaryPaidLabel) {
+            summaryPaidLabel.innerText = trx.status === 'Lunas' ? 'Total Dibayar:' : 'DP Dibayar:';
+        }
+        document.getElementById('rcpt_summary_paid').innerText = formatRp(trx.paid);
+        document.getElementById('rcpt_summary_status').innerText = trx.status;
+
+        const remainingRow = document.getElementById('rcpt_summary_remaining_row');
+        if (remainingRow) {
+            if (trx.status === 'Lunas') {
+                remainingRow.classList.add('hidden');
+            } else {
+                remainingRow.classList.remove('hidden');
+                let sisaVal = Number(trx.total) - Number(trx.paid);
+                document.getElementById('rcpt_summary_remaining').innerText = formatRp(sisaVal);
+            }
+        }
+
+        // Catatan:
+        const notesSection = document.getElementById('rcpt_notes_section');
+        const notesText = document.getElementById('rcpt_notes');
+        if (notesText) {
+            if (trx.notes) {
+                notesSection.classList.remove('hidden');
+                notesText.innerText = trx.notes;
+            } else {
+                notesSection.classList.add('hidden');
+            }
+        }
+    }
+
+    function printReceipt() {
+        window.print();
+    }
+
+    function downloadReceiptPDF() {
+        const element = document.getElementById('receiptModalContent');
+        if (!element) return;
+
+        const clone = element.cloneNode(true);
+        clone.querySelectorAll('.print-hide').forEach(el => el.remove());
+        clone.querySelector('button[type="button"]')?.remove();
+
+        clone.style.border = 'none';
+        clone.style.boxShadow = 'none';
+        clone.style.padding = '40px';
+        clone.style.borderRadius = '0px';
+        clone.style.backgroundColor = '#ffffff';
+        clone.style.maxHeight = 'none';
+        clone.style.height = 'auto';
+        clone.style.overflow = 'visible';
+
+        const trxIdText = document.getElementById('rcpt_id').innerText;
+        const cleanTrxId = trxIdText.replace('#', '');
+        const isLunas = document.getElementById('receipt_badge')?.innerText.includes('Kwitansi');
+        const filenamePrefix = isLunas ? 'Kwitansi_Alcake' : 'Nota_Alcake';
+
+        const opt = {
+            margin:       0.3,
+            filename:     `${filenamePrefix}_#${cleanTrxId}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2.5, useCORS: true, scrollY: 0, scrollX: 0 },
+            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        alert('Menyiapkan dokumen PDF, mohon tunggu sebentar...');
+        html2pdf().set(opt).from(clone).save();
+    }
+
+    function closeReceiptModal() {
+        document.getElementById('receiptModal').classList.add('hidden');
+        document.body.style.overflow = '';
+        const mainEl = document.querySelector('main');
+        if (mainEl) mainEl.style.overflow = '';
+    }
+
     window.openDetailModal = openDetailModal;
     window.closeDetailModal = closeDetailModal;
     window.openProductionConfirmModal = openProductionConfirmModal;
@@ -1477,6 +1853,11 @@
     window.closeCreateModal = closeCreateModal;
     window.openEditModal = openEditModal;
     window.closeEditModal = closeEditModal;
+    window.openReceiptModalForOrder = openReceiptModalForOrder;
+    window.openReceiptModal = openReceiptModal;
+    window.printReceipt = printReceipt;
+    window.downloadReceiptPDF = downloadReceiptPDF;
+    window.closeReceiptModal = closeReceiptModal;
     if (typeof addProductRow !== 'undefined') window.addProductRow = addProductRow;
     if (typeof removeProductRow !== 'undefined') window.removeProductRow = removeProductRow;
 </script>

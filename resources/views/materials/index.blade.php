@@ -3,20 +3,20 @@
 @section('title', 'Stok Bahan Baku - Alva Cake')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-8 py-6">
+<div class="max-w-7xl mx-auto px-4 sm:px-8 py-6">
     <div class="space-y-8">
         <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-pink-100 via-rose-100 to-pink-50 p-8 shadow-xl border border-pink-200/50">
             <div class="absolute top-0 right-0 w-64 h-64 bg-pink-200/30 rounded-full blur-3xl"></div>
             <div class="absolute bottom-0 left-0 w-48 h-48 bg-rose-200/30 rounded-full blur-3xl"></div>
-            <div class="relative flex items-center justify-between">
+            <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div class="flex items-center gap-4">
-                    <div class="w-16 h-16 bg-gradient-to-br from-pink-400 to-rose-400 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3">
+                    <div class="w-16 h-16 bg-gradient-to-br from-pink-400 to-rose-400 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3 flex-shrink-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package w-8 h-8 text-white"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
                     </div>
                     <div>
-                        <h1 class="text-4xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">Stok Bahan Baku</h1>
-                        <div class="flex items-center gap-3 mt-2">
-                            <p class="text-pink-600 flex items-center gap-2">
+                        <h1 class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">Stok Bahan Baku</h1>
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mt-2">
+                            <p class="text-pink-600 flex items-center gap-2 text-sm sm:text-base">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles w-4 h-4"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
                                 Kelola stok bahan baku untuk produksi kue
                             </p>
@@ -24,8 +24,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex gap-3">
-                    <button data-slot="dialog-trigger" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-primary/90 h-9 has-[&gt;svg]:px-3 bg-gradient-to-r from-pink-400 to-rose-400 hover:from-pink-500 hover:to-rose-500 text-white shadow-2xl rounded-2xl px-6 py-6 transform hover:scale-105 transition-all" type="button" onclick="openNewMaterialModal()">
+                <div class="flex gap-3 w-full md:w-auto">
+                    <button data-slot="dialog-trigger" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-primary/90 h-9 has-[&gt;svg]:px-3 bg-gradient-to-r from-pink-400 to-rose-400 hover:from-pink-500 hover:to-rose-500 text-white shadow-2xl rounded-2xl px-6 py-6 transform hover:scale-105 transition-all w-full md:w-auto" type="button" onclick="openNewMaterialModal()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus w-5 h-5 mr-2"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg><span class="font-semibold">Tambah Bahan Baku Baru</span>
                     </button>
                 </div>
@@ -55,13 +55,13 @@
 
         <div class="bg-white/90 backdrop-blur-xl rounded-3xl border-2 border-pink-100 overflow-hidden shadow-2xl">
             <div class="px-8 py-6 bg-gradient-to-r from-pink-100 via-rose-100 to-pink-100 border-b-2 border-pink-200">
-                <div class="flex items-center justify-between gap-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-500 rounded-xl flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package w-5 h-5 text-white"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg></div><h3 class="text-xl font-bold text-pink-900">Stok Bahan Baku Saat Ini</h3>
                     </div>
-                    <div class="flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-xl px-4 py-2 border-2 border-pink-200">
+                    <div class="flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-xl px-4 py-2 border-2 border-pink-200 w-full sm:w-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search w-5 h-5 text-pink-500"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-                        <input type="text" id="material_search_input" data-slot="input" class="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm font-medium w-64 outline-none" placeholder="Cari nama bahan baku..." value="">
+                        <input type="text" id="material_search_input" data-slot="input" class="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm font-medium w-full sm:w-64 outline-none" placeholder="Cari nama bahan baku..." value="">
                     </div>
                 </div>
             </div>
@@ -388,7 +388,7 @@
 
 
 <div id="newMaterialModal" class="fixed inset-0 z-50 hidden flex items-center justify-center py-10 animate-fade-in">
-    <div onclick="closeNewMaterialModal()" data-state="open" data-slot="dialog-overlay" class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50" style="pointer-events: auto;" data-aria-hidden="true" aria-hidden="true"></div>
+    <div onclick="closeNewMaterialModal()" data-state="open" data-slot="dialog-overlay" class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/40 backdrop-blur-md" style="pointer-events: auto;" data-aria-hidden="true" aria-hidden="true"></div>
     <div class="bg-white rounded-3xl w-full max-w-md mx-4 shadow-2xl flex flex-col relative max-h-[95vh] overflow-hidden z-50">
         <div class="px-7 pt-7 pb-4 flex justify-between items-center border-b border-gray-100">
             <div class="flex items-center gap-3">
@@ -439,7 +439,7 @@
 </div>
 
 <!-- Modal Edit Nama & Satuan Bahan Baku -->
-<div id="editMaterialModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 animate-fade-in">
+<div id="editMaterialModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 backdrop-blur-md animate-fade-in">
     <div onclick="closeEditMaterialModal()" data-state="open" data-slot="dialog-overlay" class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-transparent" style="pointer-events: auto;" data-aria-hidden="true" aria-hidden="true"></div>
     <div role="dialog" id="radix-:r4l:" aria-describedby="radix-:r4n:" aria-labelledby="radix-:r4m:" data-state="open" data-slot="dialog-content" class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative w-full max-w-[calc(100%-2rem)] z-50 gap-4 p-6 duration-200 sm:max-w-[500px] bg-white backdrop-blur-xl rounded-3xl border-2 border-purple-200/50 shadow-2xl max-h-[90vh] flex flex-col" tabindex="-1" style="pointer-events: auto;">
         <div data-slot="dialog-header" class="flex flex-col gap-2 text-center sm:text-left">
@@ -481,7 +481,7 @@
 </div>
 
 <!-- Modal Pengaturan Stok Bahan Baku -->
-<div id="editStockModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 animate-fade-in">
+<div id="editStockModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 backdrop-blur-md animate-fade-in">
     <div onclick="closeEditStockModal()" data-state="open" data-slot="dialog-overlay" class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-transparent" style="pointer-events: auto;" data-aria-hidden="true" aria-hidden="true"></div>
     <div role="dialog" id="radix-:r4o:" aria-describedby="radix-:r4q:" aria-labelledby="radix-:r4p:" data-state="open" data-slot="dialog-content" class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative w-full max-w-[calc(100%-2rem)] z-50 gap-4 p-6 duration-200 sm:max-w-[600px] bg-white backdrop-blur-xl rounded-3xl border-2 border-green-200/50 shadow-2xl max-h-[90vh] flex flex-col mx-auto" style="pointer-events: auto;">
         <div data-slot="dialog-header" class="flex flex-col gap-2 text-center sm:text-left">

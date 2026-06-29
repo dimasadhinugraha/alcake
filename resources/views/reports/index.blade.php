@@ -9,22 +9,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <div class="flex-1 overflow-auto relative z-10 bg-transparent min-h-screen">
-    <div class="max-w-7xl mx-auto px-8 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-6">
         <div class="space-y-8" style="font-family: 'DM Sans', sans-serif;">
             
             <!-- Banner Header: Purple Pink Gradient Box -->
-            <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-purple-500 via-pink-500 to-rose-400 p-10 shadow-2xl">
+            <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-purple-500 via-pink-500 to-rose-400 p-8 sm:p-10 shadow-2xl">
                 <div class="absolute inset-0">
                     <div class="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
                 </div>
-                <div class="relative flex items-center justify-between">
-                    <div class="flex items-center gap-6">
-                        <div class="w-20 h-20 bg-white/20 backdrop-blur-xl rounded-[1.2rem] flex items-center justify-center shadow-2xl border border-white/30">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-white"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M8 18v-2"></path><path d="M12 18v-4"></path><path d="M16 18v-6"></path></svg>
+                <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-xl rounded-[1.2rem] flex items-center justify-center shadow-2xl border border-white/30 shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 sm:w-10 sm:h-10 text-white"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M8 18v-2"></path><path d="M12 18v-4"></path><path d="M16 18v-6"></path></svg>
                         </div>
                         <div>
-                            <h1 class="text-5xl font-extrabold text-white drop-shadow-lg mb-2" style="font-family: 'Outfit', sans-serif;">Laporan Operasional</h1>
-                            <p class="text-white/90 text-lg font-medium">Analisis Lengkap Penjualan &amp; Stok Bahan Baku</p>
+                            <h1 class="text-3xl sm:text-5xl font-extrabold text-white drop-shadow-lg mb-2" style="font-family: 'Outfit', sans-serif;">Laporan Operasional</h1>
+                            <p class="text-white/90 text-sm sm:text-lg font-medium">Analisis Lengkap Penjualan &amp; Stok Bahan Baku</p>
                         </div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
 
             <!-- Segment Tab Selector Container -->
             <div class="flex flex-col gap-2 space-y-6">
-                <div role="tablist" class="text-muted-foreground items-center justify-center grid grid-cols-4 w-full bg-gradient-to-r from-pink-100 to-purple-100 p-2 rounded-2xl h-auto min-h-14">
+                <div role="tablist" class="text-muted-foreground items-center justify-center grid grid-cols-2 md:grid-cols-4 w-full bg-gradient-to-r from-pink-100 to-purple-100 p-2 rounded-2xl h-auto min-h-14 gap-2">
                     <button type="button" onclick="switchTab('harian')" id="btn-harian" class="tab-btn flex items-center justify-center gap-1.5 py-3 text-sm font-semibold rounded-xl transition duration-300">📅 Penjualan Harian</button>
                     <button type="button" onclick="switchTab('bulanan')" id="btn-bulanan" class="tab-btn flex items-center justify-center gap-1.5 py-3 text-sm font-semibold rounded-xl transition duration-300">📊 Laporan Bulanan</button>
                     <button type="button" onclick="switchTab('stok')" id="btn-stok" class="tab-btn flex items-center justify-center gap-1.5 py-3 text-sm font-semibold rounded-xl transition duration-300">📦 Stok Bahan Baku</button>
@@ -50,12 +50,12 @@
                             </h4>
                         </div>
                         <div class="px-6 pb-6">
-                            <div class="flex gap-4 items-end">
+                            <div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-end">
                                 <div class="flex-1">
                                     <label class="text-sm font-bold mb-2 block text-gray-800">Tanggal</label>
                                     <input type="date" id="daily_date_picker" onchange="changeDailyDate(this.value)" class="w-full px-3 py-1 border-2 border-pink-200 rounded-xl h-12 outline-none focus:border-pink-400 font-semibold text-gray-700" value="{{ $selectedDailyDateStr }}">
                                 </div>
-                                <button onclick="downloadPDF('harian')" class="inline-flex items-center justify-center gap-2 text-white bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 font-bold rounded-xl h-12 px-6 shadow-md transition duration-250 cursor-pointer">
+                                <button onclick="downloadPDF('harian')" class="inline-flex items-center justify-center gap-2 text-white bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 font-bold rounded-xl h-12 px-6 shadow-md transition duration-250 cursor-pointer w-full sm:w-auto">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-1"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>Export PDF
                                 </button>
                             </div>
@@ -168,7 +168,7 @@
                             </h4>
                         </div>
                         <div class="px-6 pb-6">
-                            <div class="flex gap-4 items-end">
+                            <div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-end">
                                 <div class="flex-1">
                                     <label class="text-sm font-bold mb-2 block text-gray-800">Bulan</label>
                                     <select id="filter_month" onchange="changeMonthlyFilter()" class="w-full border-2 border-purple-200 rounded-xl h-12 px-3 outline-none focus:border-purple-400 font-semibold text-gray-700 bg-white">
@@ -194,7 +194,7 @@
                                         <option value="2027" {{ $selectedYear == 2027 ? 'selected' : '' }}>2027</option>
                                     </select>
                                 </div>
-                                <button onclick="downloadPDF('bulanan')" class="inline-flex items-center justify-center gap-2 text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 font-bold rounded-xl h-12 px-6 shadow-md transition duration-250 cursor-pointer">
+                                <button onclick="downloadPDF('bulanan')" class="inline-flex items-center justify-center gap-2 text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 font-bold rounded-xl h-12 px-6 shadow-md transition duration-250 cursor-pointer w-full sm:w-auto">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-1"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>Export PDF
                                 </button>
                             </div>

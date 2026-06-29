@@ -18,11 +18,26 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Bikin User Admin
+        // 1. Bikin User Admin (Owner), Produksi, dan Kasir
         $admin = User::create([
             'name' => 'Admin Alva Cake',
             'email' => 'admin@admin.com',
             'password' => Hash::make('admin123'),
+            'role' => 'owner',
+        ]);
+
+        $produksi = User::create([
+            'name' => 'Produksi Alva Cake',
+            'email' => 'produksi@admin.com',
+            'password' => Hash::make('produksi123'),
+            'role' => 'produksi',
+        ]);
+
+        $kasir = User::create([
+            'name' => 'Kasir Alva Cake',
+            'email' => 'kasir@admin.com',
+            'password' => Hash::make('kasir123'),
+            'role' => 'kasir',
         ]);
 
         // 2. Bikin Dummy Bahan Baku

@@ -21,9 +21,9 @@ class TransactionController extends Controller
         });
         $totalLunas = $transactions->where('status', 'Lunas')->sum('paid');
 
-        // Kita ambil pesanan yang belum punya transaksi (dan bukan dibatalkan) dengan eager loading produk agar bisa dibayar
+        // Kita ambil pesanan yang belum punya transaksi (dan statusnya Selesai) dengan eager loading produk agar bisa dibayar
         $pendingOrders = Order::with('productsRelation')->doesntHave('transaction')
-            ->where('status', '!=', 'Dibatalkan')
+            ->where('status', 'Selesai')
             ->orderBy('created_at', 'desc')
             ->get()
             ->map(function($order) {

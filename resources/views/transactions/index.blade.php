@@ -45,7 +45,7 @@
         }
     }
 </style>
-<div class="p-8 bg-transparent min-h-full font-sans relative space-y-8">
+<div class="p-4 sm:p-8 bg-transparent min-h-full font-sans relative space-y-8">
 
     @if(session('success'))
     <div class="bg-green-50 text-green-700 p-4 rounded-2xl font-bold border border-green-100 flex items-center gap-3 shadow-sm">
@@ -55,7 +55,7 @@
     @endif
 
     <!-- Modal: Buat Transaksi -->
-    <div id="trxModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 py-10 transition-opacity animate-fade-in">
+    <div id="trxModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md py-10 transition-opacity animate-fade-in !mt-0">
         <div class="bg-white rounded-[2rem] border-4 border-emerald-200 shadow-2xl p-8 w-full max-w-3xl max-h-[95vh] overflow-y-auto relative">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-3xl font-extrabold text-emerald-900" style="font-family: Outfit, sans-serif;"> Buat Transaksi Pembayaran</h2>
@@ -155,99 +155,144 @@
     </div>
 
     <!-- Modal: Nota Pembayaran -->
-    <div id="receiptModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 animate-fade-in">
-        <div id="receiptModalContent" class="relative grid w-full gap-4 p-6 shadow-2xl sm:max-w-lg max-w-2xl bg-white rounded-3xl border-4 border-emerald-200 max-h-[90vh] overflow-y-auto">
-            <div class="text-center pb-4 border-b-2 border-dashed border-emerald-100">
-                <h1 class="text-3xl font-black text-pink-600 tracking-wider font-outfit">ALCAKE</h1>
-                <p class="text-xs text-slate-500 font-bold mt-1">Premium Bakery & Custom Cake</p>
-                <div class="inline-flex items-center gap-1.5 mt-2 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full text-xs font-extrabold uppercase tracking-wide">
-                    🧾 Nota Pembayaran Resmi
+    <div id="receiptModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md animate-fade-in !mt-0">
+        <div id="receiptModalContent" class="relative w-full max-w-3xl bg-white p-8 rounded-3xl border-4 border-slate-300 shadow-2xl max-h-[90vh] overflow-y-auto" style="font-family: 'Courier New', Courier, monospace; color: #1e293b;">
+            <!-- Top Row: Logo/Address, Title, Metadata -->
+            <div class="flex justify-between items-start border-b-2 border-slate-800 pb-4 mb-4">
+                <!-- Left: Company Info -->
+                <div class="space-y-1">
+                    <h2 class="text-2xl font-black tracking-wider text-pink-600 font-outfit">ALCAKE</h2>
+                    <p class="text-[10px] text-slate-600 font-bold">PREMIUM BAKERY & CUSTOM CAKE</p>
+                    <p class="text-[9px] text-slate-500 leading-tight">Jl. Rinjani No. 12, Malang<br>Telp: 0812-3456-7890</p>
+                </div>
+                
+                <!-- Center: Doc Title -->
+                <div class="text-center self-center px-4">
+                    <h1 id="receipt_doc_title" class="text-2xl font-black tracking-widest text-slate-900 font-outfit uppercase">KWITANSI PEMBAYARAN</h1>
+                    <div id="receipt_badge" class="hidden"></div>
+                </div>
+
+                <!-- Right: Metadata Info -->
+                <div class="text-right text-[11px] space-y-1 text-slate-700">
+                    <div class="flex justify-end gap-2">
+                        <span class="text-slate-500">Tgl Transaksi:</span>
+                        <span id="rcpt_date" class="font-bold text-slate-900"></span>
+                    </div>
+                    <div class="flex justify-end gap-2">
+                        <span class="text-slate-500">No. Nota:</span>
+                        <span id="rcpt_id" class="font-mono font-bold text-slate-900"></span>
+                    </div>
+                    <div class="flex justify-end gap-2">
+                        <span class="text-slate-500">Pelanggan:</span>
+                        <span id="rcpt_customer" class="font-bold text-slate-900"></span>
+                    </div>
+                    <div class="flex justify-end gap-2">
+                        <span class="text-slate-500">Admin/Kasir:</span>
+                        <span id="rcpt_admin" class="font-bold text-slate-900"></span>
+                    </div>
                 </div>
             </div>
-            <div class="space-y-4">
-                <div class="p-6 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl border-2 border-emerald-200">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <p class="text-sm text-gray-600">Nomor Transaksi</p>
-                            <p id="rcpt_id" class="font-mono font-bold"></p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-600">Tanggal</p>
-                            <p id="rcpt_date" class="font-bold"></p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-600">Pelanggan</p>
-                            <p id="rcpt_customer" class="font-bold text-lg text-emerald-900"></p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-600">Admin/Kasir</p>
-                            <p id="rcpt_admin" class="font-bold"></p>
-                        </div>
+
+            <!-- Middle Section: Telah terima dari, Sejumlah uang, Terbilang -->
+            <div id="rcpt_middle_section" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 text-sm border-b border-dashed border-slate-300 pb-4">
+                <div class="space-y-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-slate-500 w-32 shrink-0">Telah terima dari :</span>
+                        <span id="rcpt_received_from" class="font-bold text-slate-800 border-b border-dotted border-slate-400 flex-1"></span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-slate-500 w-32 shrink-0">Sejumlah uang   :</span>
+                        <span id="rcpt_amount_numeric" class="font-extrabold text-slate-950 border-b border-dotted border-slate-400 flex-1 text-lg"></span>
                     </div>
                 </div>
+                <!-- Right: Terbilang Box -->
+                <div class="flex items-center justify-center border-2 border-dashed border-slate-400 bg-slate-50 rounded-xl p-4">
+                    <span class="text-xs text-slate-400 uppercase tracking-wider font-bold mr-2">Terbilang:</span>
+                    <span id="rcpt_amount_words" class="italic font-bold text-slate-800 text-center leading-relaxed"></span>
+                </div>
+            </div>
 
-                <div>
-                    <h4 class="font-bold mb-3">Produk:</h4>
-                    <div id="rcpt_products">
+            <!-- Table Section -->
+            <div class="mb-6">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="border-t-2 border-b-2 border-slate-800 font-extrabold text-slate-900">
+                            <th class="py-2 w-12 text-center">NO</th>
+                            <th class="py-2">KETERANGAN / NAMA KUE</th>
+                            <th class="py-2 text-right pr-4">HARGA SATUAN</th>
+                            <th class="py-2 text-center w-20">QTY</th>
+                            <th class="py-2 text-right w-32">JUMLAH</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rcpt_table_body" class="divide-y divide-slate-100">
                         <!-- Products injected here -->
-                    </div>
-                    <div class="flex justify-between p-3 bg-emerald-100 rounded-lg font-bold text-lg mt-2">
-                        <span>Total:</span>
-                        <span id="rcpt_total"></span>
-                    </div>
-                </div>
+                    </tbody>
+                    <tfoot>
+                        <tr class="border-t-2 border-slate-800 font-extrabold text-sm text-slate-900">
+                            <td colspan="4" class="py-3 text-right pr-4">TOTAL :</td>
+                            <td id="rcpt_total_amount" class="py-3 text-right"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
 
-                <div id="rcpt_status_card" class="p-6 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl border-2 border-yellow-200">
-                    <h4 id="rcpt_status_title" class="font-bold mb-4 text-yellow-900"></h4>
-                    <div class="space-y-2">
-                        <div class="flex justify-between">
-                            <span>Total Pesanan:</span>
-                            <span id="rcpt_status_total" class="font-bold"></span>
-                        </div>
-                        <div id="rcpt_status_paid_row" class="flex justify-between">
-                            <span id="rcpt_status_paid_label">DP Dibayar:</span>
-                            <span id="rcpt_status_paid" class="font-bold text-green-700"></span>
-                        </div>
-                        <div id="rcpt_status_date_row" class="flex justify-between text-xs text-gray-600">
-                            <span id="rcpt_status_date_label">Tanggal DP:</span>
-                            <span id="rcpt_status_date"></span>
-                        </div>
-                        <div id="rcpt_status_note_row" class="flex justify-between text-xs">
-                            <span>Nota DP:</span>
-                            <span id="rcpt_status_note" class="font-mono font-semibold"></span>
-                        </div>
-                        <div id="rcpt_remaining_row" class="border-t-2 border-yellow-300 pt-2 mt-2">
-                            <div class="flex justify-between">
-                                <span class="font-bold">Sisa Pembayaran:</span>
-                                <span id="rcpt_remaining" class="font-extrabold text-xl text-orange-600"></span>
-                            </div>
-                        </div>
+            <!-- Bottom Section: Summary, Notes, Signature -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-dashed border-slate-300">
+                <!-- Left: Summary Details -->
+                <div class="text-[11px] space-y-1.5 text-slate-700 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div class="flex justify-between">
+                        <span>Total Belanja:</span>
+                        <span id="rcpt_summary_total" class="font-bold"></span>
+                    </div>
+                    <div class="flex justify-between text-green-700">
+                        <span id="rcpt_summary_paid_label">Jumlah Dibayar:</span>
+                        <span id="rcpt_summary_paid" class="font-bold"></span>
+                    </div>
+                    <div id="rcpt_summary_remaining_row" class="flex justify-between text-red-600 border-t border-slate-200 pt-1.5 mt-1">
+                        <span>Sisa Tagihan:</span>
+                        <span id="rcpt_summary_remaining" class="font-bold"></span>
+                    </div>
+                    <div class="flex justify-between pt-1 border-t border-slate-200">
+                        <span>Status:</span>
+                        <span id="rcpt_summary_status" class="font-extrabold uppercase text-indigo-700"></span>
                     </div>
                 </div>
 
-                <div id="rcpt_notes_section" class="p-4 bg-gray-50 rounded-xl">
-                    <p class="text-sm text-gray-600 mb-1">Catatan:</p>
-                    <p id="rcpt_notes" class="text-sm"></p>
+                <!-- Center: Attention/Warning Box -->
+                <div class="text-[10px] text-slate-600 p-4 rounded-xl border border-amber-200 bg-amber-50/50">
+                    <p class="font-bold text-amber-800 mb-1 flex items-center gap-1">
+                        ⚠️ Perhatian:
+                    </p>
+                    <ul class="list-disc list-inside space-y-1 leading-relaxed">
+                        <li>Simpan dokumen ini sebagai bukti transaksi sah.</li>
+                        <li>Pesanan yang sudah diproses tidak dapat dibatalkan secara sepihak.</li>
+                        <li>Untuk pesanan DP, pelunasan wajib diselesaikan saat pengambilan kue.</li>
+                    </ul>
                 </div>
 
-                <div class="print-hide flex gap-3 mt-4">
-                    <button onclick="printReceipt()" class="flex-1 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm border-2 border-emerald-300 text-emerald-700 hover:bg-emerald-50 px-4 py-2 rounded-2xl h-12 font-bold cursor-pointer transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer w-5 h-5 mr-1">
-                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-                            <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"></path>
-                            <rect x="6" y="14" width="12" height="8" rx="1"></rect>
-                        </svg>
-                        Cetak Nota
-                    </button>
-                    <button onclick="downloadReceiptPDF()" class="flex-1 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 px-4 py-2 rounded-2xl h-12 font-bold cursor-pointer transition shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download w-5 h-5 mr-1">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="7 10 12 15 17 10"></polyline>
-                            <line x1="12" x2="12" y1="15" y2="3"></line>
-                        </svg>
-                        Download PDF
-                    </button>
+                <!-- Right: Signature -->
+                <div class="text-center flex flex-col justify-between h-full pt-2">
+                    <div>
+                        <p id="rcpt_signature_date" class="text-xs text-slate-700 font-bold mb-1"></p>
+                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Hormat Kami,</p>
+                    </div>
+                    <div class="mt-8">
+                        <div class="w-40 mx-auto border-b border-slate-800"></div>
+                        <p class="text-[10px] font-bold text-slate-700 mt-1 uppercase tracking-wider">Admin Alva Cake</p>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Print Hide Buttons Section -->
+            <div class="print-hide flex gap-3 mt-8 border-t border-slate-200 pt-4">
+                <button onclick="printReceipt()" class="flex-1 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm border-2 border-emerald-300 text-emerald-700 hover:bg-emerald-50 px-4 py-2 rounded-2xl h-12 font-bold cursor-pointer transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"></path><rect x="6" y="14" width="12" height="8" rx="1"></rect></svg>
+                    Cetak Nota
+                </button>
+                <button onclick="downloadReceiptPDF()" class="flex-1 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 px-4 py-2 rounded-2xl h-12 font-bold cursor-pointer transition shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
+                    Download PDF
+                </button>
             </div>
             
             <button type="button" onclick="closeReceiptModal()" class="print-hide ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 cursor-pointer">
@@ -261,7 +306,7 @@
     </div>
 
     <!-- Modal: Pelunasan -->
-    <div id="settlementModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 animate-fade-in">
+    <div id="settlementModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md animate-fade-in !mt-0">
         <div class="bg-white rounded-3xl border-4 border-green-200 shadow-2xl p-0 max-h-[85vh] flex flex-col w-full max-w-2xl relative overflow-hidden">
             <div data-slot="dialog-header" class="flex flex-col gap-2 text-center sm:text-left px-6 py-5 border-b-4 border-green-200 bg-gradient-to-r from-green-50 to-emerald-50">
                 <h2 class="text-2xl font-extrabold text-green-900 flex items-center gap-2">
@@ -401,7 +446,29 @@
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-8 py-6"><div class="space-y-8" style="font-family: &quot;DM Sans&quot;, sans-serif;"><div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-400 p-10 shadow-2xl" style="opacity: 1; transform: none;"><div class="absolute inset-0"><div class="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl" style="transform: scale(1.11046) rotate(49.7055deg);"></div></div><div class="relative flex items-center justify-between"><div class="flex items-center gap-6"><div class="w-20 h-20 bg-white/20 backdrop-blur-xl rounded-[1.2rem] flex items-center justify-center shadow-2xl border border-white/30"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-receipt w-10 h-10 text-white"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"></path><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 17.5v-11"></path></svg></div><div><h1 class="text-5xl font-extrabold text-white drop-shadow-lg mb-2" style="font-family: Outfit, sans-serif;">Transaksi Pembayaran</h1><p class="text-white/90 text-lg font-medium">Sistem DP &amp; Pelunasan Otomatis</p></div></div><div type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:r2a:" data-state="closed" data-slot="dialog-trigger" tabindex="0"><button onclick="openTransactionModal()" data-slot="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-9 has-[&gt;svg]:px-3 bg-white text-emerald-700 hover:bg-black/50 shadow-2xl rounded-2xl px-8 py-7 text-lg font-bold cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus w-6 h-6 mr-2"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>Buat Transaksi</button></div></div></div><div class="grid grid-cols-1 md:grid-cols-3 gap-6"><div class="bg-gradient-to-br from-emerald-400 to-teal-400 rounded-2xl p-6 text-white shadow-xl" style="opacity: 1; transform: none;"><div class="flex justify-between items-center"><div><p class="text-white/80 text-sm mb-1">Total Pendapatan</p><p class="text-4xl font-extrabold">{{ 'Rp ' . number_format($totalPendapatan, 0, ',', '.') }}</p></div><div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign w-8 h-8"><line x1="12" x2="12" y1="2" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div></div></div><div class="bg-gradient-to-br from-yellow-400 to-orange-400 rounded-2xl p-6 text-white shadow-xl" style="opacity: 1; transform: none;"><div class="flex justify-between items-center"><div><p class="text-white/80 text-sm mb-1">Belum Lunas (DP)</p><p class="text-4xl font-extrabold">{{ 'Rp ' . number_format($totalBelumLunas, 0, ',', '.') }}</p></div><div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-credit-card w-8 h-8"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg></div></div></div><div class="bg-gradient-to-br from-green-400 to-emerald-400 rounded-2xl p-6 text-white shadow-xl" style="opacity: 1; transform: none;"><div class="flex justify-between items-center"><div><p class="text-white/80 text-sm mb-1">Lunas</p><p class="text-4xl font-extrabold">{{ 'Rp ' . number_format($totalLunas, 0, ',', '.') }}</p></div><div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-8 h-8"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg></div></div></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 border-2 border-emerald-200 rounded-2xl shadow-xl"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6 bg-gradient-to-r from-emerald-50 to-teal-50"><h4 data-slot="card-title" class="leading-none flex items-center gap-2 text-emerald-900"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search w-5 h-5"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>Filter Transaksi</h4></div><div data-slot="card-content" class="px-6 [&amp;:last-child]:pb-6 pt-6"><div class="grid grid-cols-1 md:grid-cols-4 gap-4"><div class="space-y-2"><label data-slot="label" class="flex items-center gap-2 select-none text-sm font-bold text-emerald-900">Dari Tanggal</label><input type="date" id="filter_from_date" onchange="filterTransactions()" class="w-full bg-white border-2 border-emerald-200 rounded-xl h-10 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 font-medium" value=""></div><div class="space-y-2"><label data-slot="label" class="flex items-center gap-2 select-none text-sm font-bold text-emerald-900">Sampai Tanggal</label><input type="date" id="filter_to_date" onchange="filterTransactions()" class="w-full bg-white border-2 border-emerald-200 rounded-xl h-10 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 font-medium" value=""></div><div class="space-y-2"><label data-slot="label" class="flex items-center gap-2 select-none text-sm font-bold text-emerald-900">Status Pembayaran</label><select id="filter_status" onchange="filterTransactions()" class="w-full bg-white border-2 border-emerald-200 rounded-xl h-10 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 font-medium"><option value="Semua">🔑 Semua Status</option><option value="Lunas">✓ Lunas</option><option value="Belum Lunas">💰 Belum Lunas</option></select></div><div class="flex items-end"><button onclick="resetFilters()" class="inline-flex items-center justify-center gap-2 w-full h-10 border-2 border-emerald-200 rounded-xl text-sm font-bold text-emerald-800 bg-white hover:bg-emerald-50 transition cursor-pointer">Reset Filter</button></div></div></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 border-4 border-emerald-200 shadow-2xl rounded-[2rem]"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6 bg-gradient-to-r from-emerald-100 via-teal-100 to-cyan-100 border-b-4 border-emerald-200"><h4 data-slot="card-title" class="text-2xl font-extrabold text-emerald-900">📊 Riwayat Transaksi</h4></div><div data-slot="card-content" class="px-6 [&amp;:last-child]:pb-6 pt-6"><div class="overflow-x-auto"><div data-slot="table-container" class="relative w-full overflow-x-auto"><table data-slot="table" class="w-full caption-bottom text-sm"><thead data-slot="table-header" class="[&amp;_tr]:border-b"><tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors bg-gradient-to-r from-emerald-50 to-teal-50"><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] font-extrabold">ID</th><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] font-extrabold">Tanggal</th><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] font-extrabold">Pelanggan</th><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] font-extrabold">Jenis</th><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] font-extrabold">Status</th><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] font-extrabold">Progress</th><th data-slot="table-head" class="text-foreground h-10 px-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-right font-extrabold">Aksi</th></tr></thead><tbody data-slot="table-body" class="[&amp;_tr:last-child]:border-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-6">
+        <div class="space-y-8" style="font-family: &quot;DM Sans&quot;, sans-serif;">
+            <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-400 p-8 sm:p-10 shadow-2xl" style="opacity: 1; transform: none;">
+                <div class="absolute inset-0">
+                    <div class="absolute -top-20 -right-20 w-96 h-96 bg-white/10 rounded-full blur-3xl" style="transform: scale(1.11046) rotate(49.7055deg);"></div>
+                </div>
+                <div class="relative flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-white/20 backdrop-blur-xl rounded-[1.2rem] flex items-center justify-center shadow-2xl border border-white/30 shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-receipt w-8 h-8 sm:w-10 sm:h-10 text-white"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"></path><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 17.5v-11"></path></svg>
+                        </div>
+                        <div>
+                            <h1 class="text-3xl sm:text-5xl font-extrabold text-white drop-shadow-lg mb-2" style="font-family: Outfit, sans-serif;">Transaksi Pembayaran</h1>
+                            <p class="text-white/90 text-sm sm:text-lg font-medium">Sistem DP &amp; Pelunasan Otomatis</p>
+                        </div>
+                    </div>
+                    <div type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:r2a:" data-state="closed" data-slot="dialog-trigger" tabindex="0" class="w-full lg:w-auto">
+                        <button onclick="openTransactionModal()" data-slot="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*='size-'])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive h-9 has-[&gt;svg]:px-3 bg-white text-emerald-700 hover:bg-black/50 shadow-2xl rounded-2xl px-8 py-7 text-base sm:text-lg font-bold cursor-pointer w-full lg:w-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus w-6 h-6 mr-2"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>Buat Transaksi
+                        </button>
+                    </div>
+                </div>
+            </div><div class="grid grid-cols-1 md:grid-cols-3 gap-6"><div class="bg-gradient-to-br from-emerald-400 to-teal-400 rounded-2xl p-6 text-white shadow-xl" style="opacity: 1; transform: none;"><div class="flex justify-between items-center"><div><p class="text-white/80 text-sm mb-1">Total Pendapatan</p><p class="text-4xl font-extrabold">{{ 'Rp ' . number_format($totalPendapatan, 0, ',', '.') }}</p></div><div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign w-8 h-8"><line x1="12" x2="12" y1="2" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div></div></div><div class="bg-gradient-to-br from-yellow-400 to-orange-400 rounded-2xl p-6 text-white shadow-xl" style="opacity: 1; transform: none;"><div class="flex justify-between items-center"><div><p class="text-white/80 text-sm mb-1">Belum Lunas (DP)</p><p class="text-4xl font-extrabold">{{ 'Rp ' . number_format($totalBelumLunas, 0, ',', '.') }}</p></div><div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-credit-card w-8 h-8"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" x2="22" y1="10" y2="10"></line></svg></div></div></div><div class="bg-gradient-to-br from-green-400 to-emerald-400 rounded-2xl p-6 text-white shadow-xl" style="opacity: 1; transform: none;"><div class="flex justify-between items-center"><div><p class="text-white/80 text-sm mb-1">Lunas</p><p class="text-4xl font-extrabold">{{ 'Rp ' . number_format($totalLunas, 0, ',', '.') }}</p></div><div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-8 h-8"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg></div></div></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 border-2 border-emerald-200 rounded-2xl shadow-xl"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6 bg-gradient-to-r from-emerald-50 to-teal-50"><h4 data-slot="card-title" class="leading-none flex items-center gap-2 text-emerald-900"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search w-5 h-5"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>Filter Transaksi</h4></div><div data-slot="card-content" class="px-6 [&amp;:last-child]:pb-6 pt-6"><div class="grid grid-cols-1 md:grid-cols-4 gap-4"><div class="space-y-2"><label data-slot="label" class="flex items-center gap-2 select-none text-sm font-bold text-emerald-900">Dari Tanggal</label><input type="date" id="filter_from_date" onchange="filterTransactions()" class="w-full bg-white border-2 border-emerald-200 rounded-xl h-10 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 font-medium" value=""></div><div class="space-y-2"><label data-slot="label" class="flex items-center gap-2 select-none text-sm font-bold text-emerald-900">Sampai Tanggal</label><input type="date" id="filter_to_date" onchange="filterTransactions()" class="w-full bg-white border-2 border-emerald-200 rounded-xl h-10 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 font-medium" value=""></div><div class="space-y-2"><label data-slot="label" class="flex items-center gap-2 select-none text-sm font-bold text-emerald-900">Status Pembayaran</label><select id="filter_status" onchange="filterTransactions()" class="w-full bg-white border-2 border-emerald-200 rounded-xl h-10 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 font-medium"><option value="Semua">🔑 Semua Status</option><option value="Lunas">✓ Lunas</option><option value="Belum Lunas">💰 Belum Lunas</option></select></div><div class="flex items-end"><button onclick="resetFilters()" class="inline-flex items-center justify-center gap-2 w-full h-10 border-2 border-emerald-200 rounded-xl text-sm font-bold text-emerald-800 bg-white hover:bg-emerald-50 transition cursor-pointer">Reset Filter</button></div></div></div></div><div data-slot="card" class="bg-card text-card-foreground flex flex-col gap-6 border-4 border-emerald-200 shadow-2xl rounded-[2rem]"><div data-slot="card-header" class="@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6 bg-gradient-to-r from-emerald-100 via-teal-100 to-cyan-100 border-b-4 border-emerald-200"><h4 data-slot="card-title" class="text-2xl font-extrabold text-emerald-900">📊 Riwayat Transaksi</h4></div><div data-slot="card-content" class="px-6 [&amp;:last-child]:pb-6 pt-6"><div class="overflow-x-auto"><div data-slot="table-container" class="relative w-full overflow-x-auto"><table data-slot="table" class="w-full caption-bottom text-sm"><thead data-slot="table-header" class="[&amp;_tr]:border-b"><tr data-slot="table-row" class="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors bg-gradient-to-r from-emerald-50 to-teal-50"><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] font-extrabold">ID</th><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] font-extrabold">Tanggal</th><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] font-extrabold">Pelanggan</th><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] font-extrabold">Jenis</th><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] font-extrabold">Status</th><th data-slot="table-head" class="text-foreground h-10 px-2 text-left align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] font-extrabold">Progress</th><th data-slot="table-head" class="text-foreground h-10 px-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] text-right font-extrabold">Aksi</th></tr></thead><tbody data-slot="table-body" class="[&amp;_tr:last-child]:border-0">
                 @forelse($transactions as $trx)
                 <tr data-slot="table-row" data-date="{{ $trx->payment_date }}" data-status="{{ $trx->status }}" class="data-[state=selected]:bg-muted border-b transition-colors hover:bg-emerald-50/50 transaction-row">
                     <td data-slot="table-cell" class="p-2 align-middle whitespace-nowrap [&amp;:has([role=checkbox])]:pr-0 [&amp;&gt;[role=checkbox]]:translate-y-[2px] font-mono text-sm font-bold text-emerald-600">#{{ $trx->id }}</td>
@@ -533,6 +600,43 @@
         }
     }
 
+    function terbilang(nilai) {
+        nilai = Math.floor(Math.abs(nilai));
+        const huruf = ["", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas"];
+        let temp = "";
+        
+        if (nilai < 12) {
+            temp = " " + huruf[nilai];
+        } else if (nilai < 20) {
+            temp = terbilang(nilai - 10) + " belas";
+        } else if (nilai < 100) {
+            temp = terbilang(nilai / 10) + " puluh" + terbilang(nilai % 10);
+        } else if (nilai < 200) {
+            temp = " seratus" + terbilang(nilai - 100);
+        } else if (nilai < 1000) {
+            temp = terbilang(nilai / 100) + " ratus" + terbilang(nilai % 100);
+        } else if (nilai < 2000) {
+            temp = " seribu" + terbilang(nilai - 1000);
+        } else if (nilai < 1000000) {
+            temp = terbilang(nilai / 1000) + " ribu" + terbilang(nilai % 1000);
+        } else if (nilai < 1000000000) {
+            temp = terbilang(nilai / 1000000) + " juta" + terbilang(nilai % 1000000);
+        } else if (nilai < 1000000000000) {
+            temp = terbilang(nilai / 1000000000) + " milyar" + terbilang(nilai % 1000000000);
+        } else if (nilai < 1000000000000000) {
+            temp = terbilang(nilai / 1000000000000) + " trilyun" + terbilang(nilai % 1000000000000);
+        }
+        
+        return temp.trim();
+    }
+
+    function formatTerbilang(nilai) {
+        if (nilai === 0) return "Nol rupiah";
+        let hasil = terbilang(nilai);
+        hasil = hasil.charAt(0).toUpperCase() + hasil.slice(1) + " rupiah";
+        return hasil;
+    }
+
     function openReceiptModal(trx) {
         if (typeof trx === 'string') {
             trx = JSON.parse(trx);
@@ -551,90 +655,87 @@
         document.getElementById('rcpt_date').innerText = formattedDate;
         
         document.getElementById('rcpt_customer').innerText = trx.customer;
+        document.getElementById('rcpt_received_from').innerText = trx.customer;
         document.getElementById('rcpt_admin').innerText = trx.admin || 'Admin Alcake';
+        document.getElementById('rcpt_signature_date').innerText = 'Malang, ' + formattedDate;
 
-        // Products details list
+        // Dynamic Document Title
+        const docTitle = document.getElementById('receipt_doc_title');
+        const badge = document.getElementById('receipt_badge');
+        const middleSection = document.getElementById('rcpt_middle_section');
+        if (docTitle) {
+            docTitle.innerText = trx.status === 'Lunas' ? 'KWITANSI PEMBAYARAN' : 'NOTA PENJUALAN';
+            if (badge) badge.innerText = trx.status === 'Lunas' ? 'Kwitansi' : 'Nota';
+        }
+        if (middleSection) {
+            if (trx.status === 'Lunas') {
+                middleSection.classList.remove('hidden');
+            } else {
+                middleSection.classList.add('hidden');
+            }
+        }
+
+        // Numeric and Words amount representation
+        document.getElementById('rcpt_amount_numeric').innerText = formatRp(trx.paid);
+        document.getElementById('rcpt_amount_words').innerText = formatTerbilang(trx.paid);
+
+        // Products details list in Table
         let productsHtml = '';
-        let totalVal = 0;
         let productsArr = [];
         if (trx.products) {
             productsArr = typeof trx.products === 'string' ? JSON.parse(trx.products) : trx.products;
         }
         
         if (Array.isArray(productsArr) && productsArr.length > 0) {
-            productsArr.forEach(p => {
+            productsArr.forEach((p, idx) => {
                 let subtotal = Number(p.subtotal || (p.price * p.qty));
-                totalVal += subtotal;
                 productsHtml += `
-                <div class="flex justify-between p-3 bg-gray-50 rounded-lg mb-2">
-                    <span>${p.name} ×${p.qty}</span>
-                    <span class="font-bold">${formatRp(subtotal)}</span>
-                </div>`;
+                <tr class="text-slate-800">
+                    <td class="py-2.5 text-center">${idx + 1}</td>
+                    <td class="py-2.5 font-bold">${p.name}</td>
+                    <td class="py-2.5 text-right pr-4">${formatRp(p.price)}</td>
+                    <td class="py-2.5 text-center font-bold">${p.qty} Pcs</td>
+                    <td class="py-2.5 text-right font-bold">${formatRp(subtotal)}</td>
+                </tr>`;
             });
         } else {
-            productsHtml = '<p class="text-sm text-gray-500 italic p-3 bg-gray-50 rounded-lg">Rincian produk tidak tersedia.</p>';
+            productsHtml = '<tr><td colspan="5" class="py-4 text-center text-slate-500 italic">Rincian produk tidak tersedia.</td></tr>';
         }
         
-        document.getElementById('rcpt_products').innerHTML = productsHtml;
-        document.getElementById('rcpt_total').innerText = formatRp(trx.total || totalVal);
+        document.getElementById('rcpt_table_body').innerHTML = productsHtml;
+        document.getElementById('rcpt_total_amount').innerText = formatRp(trx.total);
 
-        // Status Card dynamic styling based on "Lunas" vs "Belum Lunas"
-        const statusCard = document.getElementById('rcpt_status_card');
-        const statusTitle = document.getElementById('rcpt_status_title');
-        const statusTotal = document.getElementById('rcpt_status_total');
-        const statusPaidLabel = document.getElementById('rcpt_status_paid_label');
-        const statusPaid = document.getElementById('rcpt_status_paid');
-        const statusDateLabel = document.getElementById('rcpt_status_date_label');
-        const statusDate = document.getElementById('rcpt_status_date');
-        const statusNoteRow = document.getElementById('rcpt_status_note_row');
-        const statusNote = document.getElementById('rcpt_status_note');
-        const remainingRow = document.getElementById('rcpt_remaining_row');
-        const remainingVal = document.getElementById('rcpt_remaining');
+        // Bottom Left: Summary Card info
+        document.getElementById('rcpt_summary_total').innerText = formatRp(trx.total);
+        
+        const summaryPaidLabel = document.getElementById('rcpt_summary_paid_label');
+        if (summaryPaidLabel) {
+            summaryPaidLabel.innerText = trx.status === 'Lunas' ? 'Total Dibayar:' : 'DP Dibayar:';
+        }
+        document.getElementById('rcpt_summary_paid').innerText = formatRp(trx.paid);
+        document.getElementById('rcpt_summary_status').innerText = trx.status;
 
-        statusTotal.innerText = formatRp(trx.total);
-        statusDate.innerText = formattedDate;
-
-        if (trx.status === 'Lunas') {
-            statusCard.className = 'p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl border-4 border-green-300 text-center shadow-md';
-            statusTitle.className = 'font-black text-2xl text-green-700 mb-2 flex items-center justify-center gap-2 font-outfit';
-            statusTitle.innerHTML = '✓ PEMBAYARAN LUNAS';
-            statusPaidLabel.innerText = 'Jumlah Dibayar:';
-            statusPaid.innerText = formatRp(trx.paid);
-            statusPaid.className = 'font-bold text-green-700';
-            statusDateLabel.innerText = 'Tanggal Lunas:';
-            
-            if (trx.type === 'DP' && trx.dp_nota) {
-                statusNoteRow.classList.remove('hidden');
-                statusNote.innerText = trx.dp_nota;
+        const remainingRow = document.getElementById('rcpt_summary_remaining_row');
+        if (remainingRow) {
+            if (trx.status === 'Lunas') {
+                remainingRow.classList.add('hidden');
             } else {
-                statusNoteRow.classList.add('hidden');
+                remainingRow.classList.remove('hidden');
+                let sisaVal = Number(trx.total) - Number(trx.paid);
+                document.getElementById('rcpt_summary_remaining').innerText = formatRp(sisaVal);
             }
-            remainingRow.classList.add('hidden');
-        } else {
-            statusCard.className = 'p-6 bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl border-4 border-orange-300 text-center shadow-md';
-            statusTitle.className = 'font-black text-2xl text-orange-700 mb-2 flex items-center justify-center gap-2 font-outfit';
-            statusTitle.innerHTML = '⚠️ DP (BELUM LUNAS)';
-            statusPaidLabel.innerText = 'DP Dibayar:';
-            statusPaid.innerText = formatRp(trx.paid);
-            statusPaid.className = 'font-bold text-green-700';
-            statusDateLabel.innerText = 'Tanggal DP:';
-            
-            statusNoteRow.classList.remove('hidden');
-            statusNote.innerText = trx.dp_nota || '-';
-            
-            remainingRow.classList.remove('hidden');
-            let sisaVal = Number(trx.total) - Number(trx.paid);
-            remainingVal.innerText = formatRp(sisaVal);
         }
 
         // Catatan:
         const notesSection = document.getElementById('rcpt_notes_section');
         const notesText = document.getElementById('rcpt_notes');
-        if (trx.notes) {
-            notesSection.classList.remove('hidden');
-            notesText.innerText = trx.notes;
-        } else {
-            notesSection.classList.add('hidden');
+        if (notesText) {
+            if (trx.notes) {
+                notesSection.classList.remove('hidden');
+                notesText.innerText = trx.notes;
+            } else {
+                notesSection.classList.add('hidden');
+            }
         }
     }
 
@@ -657,20 +758,25 @@
         clone.style.padding = '40px';
         clone.style.borderRadius = '0px';
         clone.style.backgroundColor = '#ffffff';
+        clone.style.maxHeight = 'none';
+        clone.style.height = 'auto';
+        clone.style.overflow = 'visible';
 
         // Extract ID
         const trxIdText = document.getElementById('rcpt_id').innerText;
         const cleanTrxId = trxIdText.replace('#', '');
+        const isLunas = document.getElementById('receipt_badge')?.innerText.includes('Kwitansi');
+        const filenamePrefix = isLunas ? 'Kwitansi_Alcake' : 'Nota_Alcake';
 
         const opt = {
             margin:       0.3,
-            filename:     `Nota_Alcake_#${cleanTrxId}.pdf`,
+            filename:     `${filenamePrefix}_#${cleanTrxId}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2.5, useCORS: true },
+            html2canvas:  { scale: 2.5, useCORS: true, scrollY: 0, scrollX: 0 },
             jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
         };
 
-        alert('Menyiapkan dokumen PDF Nota Pembayaran, mohon tunggu sebentar...');
+        alert('Menyiapkan dokumen PDF, mohon tunggu sebentar...');
         html2pdf().set(opt).from(clone).save();
     }
 

@@ -10,8 +10,8 @@ class OrderController extends Controller
 {
     public function index()
     {
-        // Ambil data asli dari database, urutin dari yang terbaru dengan eager loading relasi produk
-        $orders = Order::with('productsRelation')->orderBy('created_at', 'desc')->get();
+        // Ambil data asli dari database, urutin dari yang terbaru dengan eager loading relasi produk dan transaksi
+        $orders = Order::with(['productsRelation', 'transaction'])->orderBy('created_at', 'desc')->get();
 
         $availableProducts = Product::orderBy('name')
             ->get()

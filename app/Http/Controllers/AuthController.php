@@ -17,8 +17,8 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'username' => 'required',
-            'password' => 'required'
+            'username' => ['required'],
+            'password' => ['required'],
         ]);
 
         $loginField = $request->input('username');
@@ -26,7 +26,7 @@ class AuthController extends Controller
 
         if (Auth::attempt([$fieldType => $loginField, 'password' => $request->password])) {
             $request->session()->regenerate();
-            return redirect()->intended('/'); // Bawa ke dashboard jika sukses
+            return redirect()->intended('/dashboard');
         }
 
         // Jika gagal, kembalikan ke halaman login dengan pesan error

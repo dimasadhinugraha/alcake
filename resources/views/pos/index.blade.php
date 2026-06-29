@@ -95,7 +95,7 @@
     </div>
 </div>
 
-<div id="transactionModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/50 transition-opacity py-10 animate-fade-in">
+<div id="transactionModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 backdrop-blur-md transition-opacity py-10 animate-fade-in">
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg mx-4 flex flex-col max-h-full">
 
         <div class="flex justify-between items-center p-6 border-b border-gray-100 shrink-0">

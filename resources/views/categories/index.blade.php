@@ -3,26 +3,26 @@
 @section('title', 'Kategori Kue - Alva Cake')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-8 py-6">
+<div class="max-w-7xl mx-auto px-4 sm:px-8 py-6">
     <div class="space-y-8">
         <!-- 1. Premium Header Banner -->
         <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-pink-100 via-rose-100 to-pink-50 p-8 shadow-xl border border-pink-200/50">
             <div class="absolute top-0 right-0 w-64 h-64 bg-pink-200/30 rounded-full blur-3xl"></div>
             <div class="absolute bottom-0 left-0 w-48 h-48 bg-rose-200/30 rounded-full blur-3xl"></div>
-            <div class="relative flex items-center justify-between">
+            <div class="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div class="flex items-center gap-4">
                     <div class="w-16 h-16 bg-gradient-to-br from-pink-400 to-rose-400 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag w-8 h-8 text-white"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
                     </div>
                     <div>
-                        <h1 class="text-4xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">Kategori Kue</h1>
+                        <h1 class="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">Kategori Kue</h1>
                         <p class="text-pink-600 mt-2 flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles w-4 h-4"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
-                            Kelola kategori kue untuk penataan katalog menu yang lebih rapi
+                            Kelola kategori kue untuk penataan katalog menu
                         </p>
                     </div>
                 </div>
-                <button onclick="openAddModal()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 h-9 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-2xl rounded-2xl px-6 py-6 transform hover:scale-105 transition-all">
+                <button onclick="openAddModal()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium disabled:pointer-events-none disabled:opacity-50 h-9 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-2xl rounded-2xl px-6 py-6 transform hover:scale-105 transition-all w-full md:w-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus w-5 h-5 mr-2"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg><span class="font-semibold">Tambah Kategori Baru</span>
                 </button>
             </div>
@@ -96,7 +96,7 @@
 
 <!-- Modal Tambah Kategori -->
 <div id="addModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 animate-fade-in">
-    <div onclick="closeAddModal()" class="absolute inset-0 bg-black/50 transition-opacity z-0" aria-hidden="true"></div>
+    <div onclick="closeAddModal()" class="absolute inset-0 bg-black/40 backdrop-blur-md transition-opacity z-0" aria-hidden="true"></div>
     <div role="dialog" class="relative w-full max-w-lg bg-white to-pink-50/30 rounded-[2rem] border-4 border-pink-200/50 shadow-2xl p-6 flex flex-col z-10 animate-scale-up" tabindex="-1">
         <div class="flex items-center gap-4 pb-3 border-b border-pink-100">
             <div class="w-14 h-14 bg-gradient-to-br from-pink-500 to-rose-500 rounded-2xl flex items-center justify-center shadow-lg">
@@ -125,7 +125,7 @@
 
 <!-- Modal Edit Kategori -->
 <div id="editModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 animate-fade-in">
-    <div onclick="closeEditModal()" class="absolute inset-0 bg-black/50 transition-opacity z-0" aria-hidden="true"></div>
+    <div onclick="closeEditModal()" class="absolute inset-0 bg-black/40 backdrop-blur-md transition-opacity z-0" aria-hidden="true"></div>
     <div role="dialog" class="relative w-full max-w-lg bg-gradient-to-br from-white to-pink-50/30 rounded-[2rem] border-4 border-pink-200/50 shadow-2xl p-6 flex flex-col z-10 animate-scale-up" tabindex="-1">
         <div class="flex items-center gap-4 pb-3 border-b border-pink-100">
             <div class="w-14 h-14 bg-gradient-to-br from-pink-500 to-rose-500 rounded-2xl flex items-center justify-center shadow-lg">

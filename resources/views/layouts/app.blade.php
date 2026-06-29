@@ -63,9 +63,12 @@
         }
     </style>
 </head>
-<body class="text-slate-800 flex h-screen overflow-hidden">
+<body class="text-slate-800 flex h-screen overflow-hidden relative">
 
-    <aside class="w-64 bg-white/80 backdrop-blur-lg border-r border-pink-100 flex flex-col h-screen sticky top-0 shadow-lg shrink-0 z-20">
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/30 backdrop-blur-xs z-30 hidden transition-opacity duration-300"></div>
+
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white/80 backdrop-blur-lg border-r border-pink-100 flex flex-col h-screen z-40 shadow-lg shrink-0 transform -translate-x-full md:translate-x-0 md:sticky md:top-0 transition-transform duration-300 ease-in-out">
         <div class="p-6 border-b border-pink-100 bg-gradient-to-br from-pink-50/50 to-rose-50/50">
             <div class="flex items-center gap-3">
                 <div class="w-12 h-12 bg-gradient-to-br from-pink-400 to-rose-400 rounded-2xl flex items-center justify-center shadow-lg">
@@ -82,16 +85,21 @@
             <div class="text-sm">
                 <p class="text-xs text-pink-600 font-medium">Login sebagai</p>
                 <p class="font-semibold text-pink-900 mt-1">{{ auth()->check() ? auth()->user()->name : 'Owner Alva Cake' }}</p>
-                <p class="text-xs text-pink-500 capitalize">(admin)</p>
+                <p class="text-xs text-pink-500 capitalize">({{ auth()->check() ? auth()->user()->role : 'admin' }})</p>
             </div>
         </div>
         
         <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+            @php
+                $role = auth()->check() ? auth()->user()->role : 'kasir';
+            @endphp
+
             <a href="/" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm {{ request()->is('dashboard') || request()->is('/') ? 'bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 font-semibold shadow-sm' : 'text-gray-700 hover:bg-pink-50/50 hover:text-pink-600' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-layout-dashboard w-5 h-5 flex-shrink-0"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
                 <span class="truncate">Dashboard</span>
             </a>
             
+            @if(in_array($role, ['owner', 'kasir']))
             <a href="/products" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm {{ request()->is('products*') ? 'bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 font-semibold shadow-sm' : 'text-gray-700 hover:bg-pink-50/50 hover:text-pink-600' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cake w-5 h-5 flex-shrink-0"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"></path><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"></path><path d="M2 21h20"></path><path d="M7 8v3"></path><path d="M12 8v3"></path><path d="M17 8v3"></path><path d="M7 4h.01"></path><path d="M12 4h.01"></path><path d="M17 4h.01"></path></svg>
                 <span class="truncate">Katalog Menu Kue</span>
@@ -101,12 +109,16 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-tag w-5 h-5 flex-shrink-0"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
                 <span class="truncate">Kategori Kue</span>
             </a>
+            @endif
             
+            @if(in_array($role, ['owner', 'produksi', 'kasir']))
             <a href="/orders" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm {{ request()->is('orders*') ? 'bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 font-semibold shadow-sm' : 'text-gray-700 hover:bg-pink-50/50 hover:text-pink-600' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-list w-5 h-5 flex-shrink-0"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg>
                 <span class="truncate">Produksi Pesanan</span>
             </a>
+            @endif
             
+            @if(in_array($role, ['owner', 'produksi']))
             <a href="/materials" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm {{ request()->is('materials*') ? 'bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 font-semibold shadow-sm' : 'text-gray-700 hover:bg-pink-50/50 hover:text-pink-600' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-package w-5 h-5 flex-shrink-0"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
                 <span class="truncate">Stok Bahan Baku</span>
@@ -116,22 +128,37 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open w-5 h-5 flex-shrink-0"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
                 <span class="truncate">Resep Master</span>
             </a>
+            @endif
             
+            @if(in_array($role, ['owner', 'kasir']))
             <a href="/transactions" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm {{ request()->is('transactions*') ? 'bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 font-semibold shadow-sm' : 'text-gray-700 hover:bg-pink-50/50 hover:text-pink-600' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart w-5 h-5 flex-shrink-0"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg>
                 <span class="truncate">Transaksi</span>
             </a>
+            @endif
             
+            @if($role === 'owner')
             <a href="/reports" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm {{ request()->is('reports*') ? 'bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 font-semibold shadow-sm' : 'text-gray-700 hover:bg-pink-50/50 hover:text-pink-600' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-chart-column-increasing w-5 h-5 flex-shrink-0"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M8 18v-2"></path><path d="M12 18v-4"></path><path d="M16 18v-6"></path></svg>
                 <span class="truncate">Laporan Operasional</span>
             </a>
+            
+            <a href="/users" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm {{ request()->is('users*') ? 'bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 font-semibold shadow-sm' : 'text-gray-700 hover:bg-pink-50/50 hover:text-pink-600' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-5 h-5 flex-shrink-0"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span class="truncate">Manajemen User</span>
+            </a>
+            @endif
         </nav>
         
-        <div class="p-4 border-t border-pink-100">
+        <div class="p-4 border-t border-pink-100 space-y-1">
+            <a href="/profile" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm {{ request()->is('profile*') ? 'bg-gradient-to-r from-pink-100 to-rose-100 text-pink-700 font-semibold shadow-sm' : 'text-gray-700 hover:bg-pink-50/50 hover:text-pink-600' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user w-5 h-5"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span class="truncate">Profil Saya</span>
+            </a>
+            
             <form method="POST" action="{{ route('logout') }}" class="w-full">
                 @csrf
-                <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-red-600 hover:bg-red-50 transition-all font-medium">
+                <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-red-600 hover:bg-red-50 transition-all font-medium cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out w-5 h-5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>
                     <span>Logout</span>
                 </button>
@@ -139,7 +166,27 @@
         </div>
     </aside>
 
-    <main class="flex-1 h-full overflow-y-auto relative z-10 bg-[#fef2f5] animate-page-fade">
+    <main class="flex-1 h-full overflow-y-auto relative z-20 bg-[#fef2f5] animate-page-fade">
+        <!-- Mobile Top Bar Header -->
+        <div class="md:hidden flex items-center justify-between px-6 py-4 bg-white/80 backdrop-blur-md border-b border-pink-100 sticky top-0 z-30 shadow-xs shrink-0">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="text-pink-600 hover:text-pink-800 focus:outline-none p-1 rounded-lg hover:bg-pink-50 cursor-pointer" aria-label="Toggle Sidebar">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-pink-400 to-rose-400 rounded-lg flex items-center justify-center shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="text-white"><path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8"></path><path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1"></path><path d="M2 21h20"></path><path d="M7 8v3"></path><path d="M12 8v3"></path><path d="M17 8v3"></path></svg>
+                    </div>
+                    <span class="font-extrabold text-pink-900 tracking-wide text-sm font-outfit">Alva Cake</span>
+                </div>
+            </div>
+            <div class="text-right">
+                <p class="text-[10px] text-pink-500 font-bold leading-none uppercase">{{ auth()->check() ? auth()->user()->role : 'Kasir' }}</p>
+                <p class="text-xs font-bold text-slate-800 mt-0.5">{{ auth()->check() ? auth()->user()->name : 'Admin' }}</p>
+            </div>
+        </div>
         <!-- Floating Bakery Background Elements -->
         <div class="fixed inset-0 pointer-events-none overflow-hidden opacity-20 z-0">
             <div class="absolute top-10 right-10 w-72 h-72 rounded-3xl overflow-hidden transform rotate-12 blur-sm">
@@ -228,6 +275,18 @@
                     }, 300);
                 }
             }, 5000);
+        };
+
+        window.toggleSidebar = function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
         };
 
         // Listen for session flashes
