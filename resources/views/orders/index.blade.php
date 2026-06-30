@@ -299,7 +299,7 @@
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big w-4 h-4 mr-1"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg>
                                                     Selesai
                                                 </button>
-                                                <button type="button" onclick='openReceiptModalForOrder(@json($order), @json($order->transaction))' class="inline-flex items-center justify-center whitespace-nowrap text-xs font-bold transition-all h-8 gap-1.5 px-3 border-2 border-emerald-300 text-emerald-700 bg-white hover:bg-emerald-50 rounded-xl cursor-pointer" title="Cetak Invoice/Kwitansi">
+                                                <button type="button" onclick='openReceiptModalForOrder(@json($order), @json($order->transaction))' class="inline-flex items-center justify-center whitespace-nowrap text-xs font-bold transition-all h-8 gap-1.5 px-3 border-2 border-emerald-300 text-emerald-700 bg-white hover:bg-emerald-50 rounded-xl cursor-pointer" title="Cetak Invoice">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer w-4 h-4"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"></path><rect x="6" y="14" width="12" height="8" rx="1"></rect></svg>
                                                     Cetak
                                                 </button>
@@ -309,7 +309,7 @@
                                                 <span class="inline-flex items-center justify-center rounded-lg border px-2.5 py-1 text-xs font-bold bg-slate-50 text-slate-400 border-slate-200">
                                                     Selesai Diproduksi
                                                 </span>
-                                                <button type="button" onclick='openReceiptModalForOrder(@json($order), @json($order->transaction))' class="inline-flex items-center justify-center whitespace-nowrap text-xs font-bold transition-all h-8 gap-1.5 px-3 border-2 border-emerald-300 text-emerald-700 bg-white hover:bg-emerald-50 rounded-xl cursor-pointer" title="Cetak Kwitansi">
+                                                <button type="button" onclick='openReceiptModalForOrder(@json($order), @json($order->transaction))' class="inline-flex items-center justify-center whitespace-nowrap text-xs font-bold transition-all h-8 gap-1.5 px-3 border-2 border-emerald-300 text-emerald-700 bg-white hover:bg-emerald-50 rounded-xl cursor-pointer" title="Cetak Invoice">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer w-4 h-4"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"></path><rect x="6" y="14" width="12" height="8" rx="1"></rect></svg>
                                                     Cetak
                                                 </button>
@@ -560,7 +560,7 @@
             
             <!-- Center: Doc Title -->
             <div class="text-center self-center px-4">
-                <h1 id="receipt_doc_title" class="text-2xl font-black tracking-widest text-slate-900 font-outfit uppercase">KWITANSI PEMBAYARAN</h1>
+                <h1 id="receipt_doc_title" class="text-2xl font-black tracking-widest text-slate-900 font-outfit uppercase">INVOICE PEMBAYARAN</h1>
                 <div id="receipt_badge" class="hidden"></div>
             </div>
 
@@ -1706,15 +1706,18 @@
         document.getElementById('rcpt_customer').innerText = trx.customer;
         document.getElementById('rcpt_received_from').innerText = trx.customer;
         document.getElementById('rcpt_admin').innerText = trx.admin || 'Admin Alcake';
-        document.getElementById('rcpt_signature_date').innerText = 'Malang, ' + formattedDate;
+        const sigDate = document.getElementById('rcpt_signature_date');
+        if (sigDate) {
+            sigDate.innerText = 'Malang, ' + formattedDate;
+        }
 
         // Dynamic Document Title
         const docTitle = document.getElementById('receipt_doc_title');
         const badge = document.getElementById('receipt_badge');
         const middleSection = document.getElementById('rcpt_middle_section');
         if (docTitle) {
-            docTitle.innerText = trx.status === 'Lunas' ? 'KWITANSI PEMBAYARAN' : 'NOTA PENJUALAN';
-            if (badge) badge.innerText = trx.status === 'Lunas' ? 'Kwitansi' : 'Nota';
+            docTitle.innerText = trx.status === 'Lunas' ? 'KWITANSI PEMBAYARAN' : 'INVOICE PEMBAYARAN';
+            if (badge) badge.innerText = trx.status === 'Lunas' ? 'Kwitansi' : 'Invoice';
         }
         if (middleSection) {
             if (trx.status === 'Lunas') {
@@ -1812,7 +1815,7 @@
         const trxIdText = document.getElementById('rcpt_id').innerText;
         const cleanTrxId = trxIdText.replace('#', '');
         const isLunas = document.getElementById('receipt_badge')?.innerText.includes('Kwitansi');
-        const filenamePrefix = isLunas ? 'Kwitansi_Alcake' : 'Nota_Alcake';
+        const filenamePrefix = isLunas ? 'Kwitansi_Alcake' : 'Invoice_Alcake';
 
         const opt = {
             margin:       0.3,

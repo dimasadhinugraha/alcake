@@ -168,7 +168,7 @@
                 
                 <!-- Center: Doc Title -->
                 <div class="text-center self-center px-4">
-                    <h1 id="receipt_doc_title" class="text-2xl font-black tracking-widest text-slate-900 font-outfit uppercase">KWITANSI PEMBAYARAN</h1>
+                    <h1 id="receipt_doc_title" class="text-2xl font-black tracking-widest text-slate-900 font-outfit uppercase">INVOICE PEMBAYARAN</h1>
                     <div id="receipt_badge" class="hidden"></div>
                 </div>
 
@@ -647,15 +647,18 @@
         document.getElementById('rcpt_customer').innerText = trx.customer;
         document.getElementById('rcpt_received_from').innerText = trx.customer;
         document.getElementById('rcpt_admin').innerText = trx.admin || 'Admin Alcake';
-        document.getElementById('rcpt_signature_date').innerText = 'Malang, ' + formattedDate;
+        const sigDate = document.getElementById('rcpt_signature_date');
+        if (sigDate) {
+            sigDate.innerText = 'Malang, ' + formattedDate;
+        }
 
         // Dynamic Document Title
         const docTitle = document.getElementById('receipt_doc_title');
         const badge = document.getElementById('receipt_badge');
         const middleSection = document.getElementById('rcpt_middle_section');
         if (docTitle) {
-            docTitle.innerText = trx.status === 'Lunas' ? 'KWITANSI PEMBAYARAN' : 'NOTA PENJUALAN';
-            if (badge) badge.innerText = trx.status === 'Lunas' ? 'Kwitansi' : 'Nota';
+            docTitle.innerText = trx.status === 'Lunas' ? 'KWITANSI PEMBAYARAN' : 'INVOICE PEMBAYARAN';
+            if (badge) badge.innerText = trx.status === 'Lunas' ? 'Kwitansi' : 'Invoice';
         }
         if (middleSection) {
             if (trx.status === 'Lunas') {
@@ -756,7 +759,7 @@
         const trxIdText = document.getElementById('rcpt_id').innerText;
         const cleanTrxId = trxIdText.replace('#', '');
         const isLunas = document.getElementById('receipt_badge')?.innerText.includes('Kwitansi');
-        const filenamePrefix = isLunas ? 'Kwitansi_Alcake' : 'Nota_Alcake';
+        const filenamePrefix = isLunas ? 'Kwitansi_Alcake' : 'Invoice_Alcake';
 
         const opt = {
             margin:       0.3,
